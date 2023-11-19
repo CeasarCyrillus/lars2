@@ -1,19 +1,15 @@
 import React from 'react';
-import {Text} from "./common/typography/Text";
-import {ThemeProvider} from "styled-components";
-import {theme} from "./theme";
-import {AppStyled} from "./App.styled";
-import {Heading} from "./common/typography/Heading";
-import 'react-calendar/dist/Calendar.css';
-import {useTranslation} from "react-i18next";
 import './i18n';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {LoginPage} from "./features/login/LoginPage";
+import {ChakraProvider} from '@chakra-ui/react';
 
-export const App = () => {
-  const {t} = useTranslation()
-  return <ThemeProvider theme={theme}>
-    <AppStyled>
-      <Heading>{t("hello")}</Heading>
-      <Text>Hello</Text>
-    </AppStyled>
-  </ThemeProvider>;
-};
+export const App = () =>
+  <ChakraProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path={"/"} element={<LoginPage/>}/>
+      </Routes>
+    </BrowserRouter>
+  </ChakraProvider>
+

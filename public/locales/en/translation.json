@@ -1,0 +1,9 @@
+{
+  "emailPlaceholder": "email address",
+  "passwordPlaceholder": "password",
+  "hidePassword": "Hide",
+  "showPassword": "Show",
+  "loginButtonLabel": "Login",
+  "forgotPasswordPrompt": "forgot password?",
+  "welcomeHeader": "Login to LARS"
+}

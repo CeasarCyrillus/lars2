@@ -1,0 +1,9 @@
+{
+  "emailPlaceholder": "e-post",
+  "passwordPlaceholder": "lösenord",
+  "hidePassword": "Dölj",
+  "showPassword": "Visa",
+  "loginButtonLabel": "Logga in",
+  "forgotPasswordPrompt": "glömt lösenord?",
+  "welcomeHeader": "Logga in på LARS"
+}
