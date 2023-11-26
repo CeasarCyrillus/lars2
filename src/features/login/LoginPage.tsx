@@ -1,17 +1,17 @@
-import {Avatar, Flex, Heading, Stack} from "@chakra-ui/react";
+import {Avatar, Heading, Stack} from "@chakra-ui/react";
 import {LoginForm} from "./LoginForm";
 import {useTranslation} from "react-i18next";
+import {useIsAuthenticated} from "../../state/authState";
+import {Navigate} from "react-router-dom";
+import {Layout} from "../main/Layout";
 
 export const LoginPage = () => {
   const {t} = useTranslation()
-  return <Flex
-    flexDirection="column"
-    width="100wh"
-    height="100vh"
-    backgroundColor="gray.50"
-    justifyContent="top"
-    alignItems="center"
-  >
+  const isAuthenticated = useIsAuthenticated()
+  if (isAuthenticated) {
+    return <Navigate to={"/"}/>
+  }
+  return <Layout>
     <Stack
       mt={10}
       flexDir="column"
@@ -22,5 +22,5 @@ export const LoginPage = () => {
       <Heading color="orange.400">{t("welcomeHeader")}</Heading>
       <LoginForm/>
     </Stack>
-  </Flex>
+  </Layout>
 }

@@ -28,6 +28,7 @@ export const PasswordInput = (props: Props) => {
         children={<FaLock/>}
       />
       <Input
+        isRequired={true}
         type={showPassword ? "text" : "password"}
         value={value}
         onChange={e => onChange(e.target.value)}
@@ -36,8 +37,8 @@ export const PasswordInput = (props: Props) => {
       <InputRightElement width="4.5rem">
         <Button
           variant={"outline"}
-          colorScheme={"orange"}
-          h="1.75rem"
+          colorScheme={"gray"}
+          height="1.75rem"
           size="sm"
           onClick={() => setShowPassword(!showPassword)}>
           {showPassword ? t("hidePassword") : t("showPassword")}

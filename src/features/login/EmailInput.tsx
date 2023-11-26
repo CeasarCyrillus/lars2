@@ -18,6 +18,7 @@ export const EmailInput = (props: Props) => {
         children={<FaUserAlt/>}
       />
       <Input
+        isRequired={true}
         value={value}
         type="email"
         placeholder={t("emailPlaceholder")}
