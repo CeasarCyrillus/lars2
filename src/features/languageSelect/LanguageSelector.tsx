@@ -53,6 +53,7 @@ export const LanguageSelector = () => {
         <MenuList sx={{minWidth: "none"}}>
           {availableLanguages.map(languageMeta =>
             <MenuItem
+              key={languageMeta.label}
               _focus={{bg: "none"}}
               sx={{paddingTop: 0, paddingBottom: 0}}
               onClick={() => setLanguage(languageMeta.languageKey)}
