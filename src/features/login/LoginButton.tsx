@@ -1,5 +1,5 @@
 import {useTranslation} from "react-i18next";
-import {Button} from "@chakra-ui/react";
+import {LoadingButton} from "../../lib/components/LoadingButton";
 
 type Props = {
   onClick: () => void
@@ -9,16 +9,10 @@ type Props = {
 export const LoginButton = (props: Props) => {
   const {onClick, isLoading, isDisabled} = props
   const {t} = useTranslation()
-  return <Button
+  return <LoadingButton
     isDisabled={isDisabled}
     onClick={onClick}
     isLoading={isLoading}
-    borderRadius={0}
-    variant="solid"
-    colorScheme="orange"
-    width="full"
-    type="submit"
-  >
-    {t("loginButtonLabel")}
-  </Button>
+    label={t("loginButtonLabel")}
+  />
 }

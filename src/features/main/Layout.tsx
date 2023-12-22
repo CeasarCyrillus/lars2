@@ -1,10 +1,10 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {Flex} from "@chakra-ui/react";
-import {Header} from "./Header";
 import {ChildrenProps} from "../../lib/childrenProps";
 
-export const Layout = (props: ChildrenProps) =>
-  <Flex
+export const Layout = (props: ChildrenProps & { header?: ReactNode }) => {
+  const {children, header} = props
+  return <Flex
     flexDirection="column"
     width="100wh"
     height="100vh"
@@ -12,6 +12,7 @@ export const Layout = (props: ChildrenProps) =>
     justifyContent="top"
     alignItems="center"
   >
-    <Header/>
-    {props.children}
-  </Flex>
+    {header}
+    {children}
+  </Flex>;
+}

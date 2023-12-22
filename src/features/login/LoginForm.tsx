@@ -15,7 +15,8 @@ export const LoginForm = () => {
   const navigate = useNavigate()
   const origin = location.state?.from?.pathname || '/';
   useEffect(() => {
-    if (isSuccess(result)) {
+    const validLogin = isSuccess(result) && result.value;
+    if (validLogin) {
       navigate(origin);
     }
   }, [result, origin, navigate])

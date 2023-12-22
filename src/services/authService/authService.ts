@@ -8,6 +8,7 @@ export type User = {
 
 export type AuthService = {
   user$: () => Observable<User>
+  isAuthenticated$: () => Observable<boolean>
 }
 
 export type AuthServiceDependencies = {
@@ -15,8 +16,12 @@ export type AuthServiceDependencies = {
 }
 export const createAuthService = (dependencies: AuthServiceDependencies): AuthService => {
   const {socketService} = dependencies
+
+  const isAuthenticated$ = () => socketService.listen$<boolean>("authentication")
   const user$ = () => socketService.listen$<User>("user")
+
   return {
     user$,
+    isAuthenticated$
   }
 }

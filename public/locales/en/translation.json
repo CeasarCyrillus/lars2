@@ -5,5 +5,14 @@
   "showPassword": "Show",
   "loginButtonLabel": "Login",
   "forgotPasswordPrompt": "forgot password?",
-  "welcomeHeader": "Login to LARS"
+  "welcomeHeader": "Login to LARS",
+  "errorTitle": "An error occurred",
+  "authenticationFailed": "Authentication failed, please login again",
+  "unknownErrorMessage": "An unexpected error occurred. Please refresh the page",
+  "incorrectLoginDetails": "Your email or password is wrong, try again",
+  "dismissDialog": "OK",
+  "fatalErrorTitle": "Uh-oh! Technical Difficulties",
+  "fatalErrorMessage": "We apologize, but it seems there's a hiccup in our system. Don't worry, we're on it!",
+  "fatalErrorPrompt": "Please try reloading the application to continue.",
+  "fatalErrorButton": "Reload"
 }
