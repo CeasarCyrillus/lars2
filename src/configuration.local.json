@@ -1,4 +1,3 @@
 {
-  "websocketURL": "http://localhost:3001",
-  "endpointURL": "http://localhost:3001"
+  "websocketURL": "http://localhost:3001"
 }

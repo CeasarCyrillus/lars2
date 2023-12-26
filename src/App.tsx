@@ -1,15 +1,15 @@
 import React from 'react';
 import './i18n';
-import {ChakraProvider} from '@chakra-ui/react';
-import {theme} from './theme';
-import {ErrorPopup} from "./features/main/error/ErrorPopup";
-import {Main} from "./features/home/Main";
-import {withSubscribe} from "./lib/withSubscribe";
-import {ChildrenProps} from "./lib/childrenProps";
-import {useIsAuthenticated} from "./state/authState";
-import {LoginPage} from "./features/login/LoginPage";
-import {AllToasts} from './lib/components/toasts/AllToasts';
-import {useHasFailedInitialConnection} from "./state/connectionState";
+import {ChakraProvider, theme} from '@chakra-ui/react';
+import {Main} from "./Main";
+import {withSubscribe} from "./common/lib/withSubscribe";
+import {ChildrenProps} from "./common/lib/childrenProps";
+import {useIsAuthenticated} from "./common/state/authState";
+import {LoginPage} from "./common/components/login/LoginPage";
+import {ReConnectionToast} from "./common/components/toasts/connectionToasts/ReConnectingToast";
+import {ReConnectedToast} from "./common/components/toasts/connectionToasts/ReConnectedToast";
+import {ConnectionErrorToast} from "./common/components/toasts/connectionToasts/ConnectionErrorToast";
+import {ConnectionErrorPage} from './common/components/error/ConnectionErrorPage';
 
 const Authenticated = withSubscribe((props: ChildrenProps) => {
   const isAuthenticated = useIsAuthenticated()
@@ -19,20 +19,13 @@ const Authenticated = withSubscribe((props: ChildrenProps) => {
   return <>{props.children}</>
 }, {fallback: "Authenticated"})
 
-const Connected = withSubscribe((props: ChildrenProps) => {
-  const {children} = props
-  const hasFailedInitialConnection = useHasFailedInitialConnection()
-  console.log("CC: hasFailedInitialConnection", hasFailedInitialConnection)
-  return <>{children}</>
-}, {fallback: "Connected"})
-
 const AppShell = withSubscribe((props: ChildrenProps) => {
   const {children} = props
   return (
     <ChakraProvider theme={theme}>
-      <Connected>
+      <ConnectionErrorPage>
         {children}
-      </Connected>
+      </ConnectionErrorPage>
     </ChakraProvider>
   )
 }, {fallback: "AppShell"})
@@ -42,7 +35,8 @@ export const App = () =>
     <Authenticated>
       <Main/>
     </Authenticated>
-    <AllToasts/>
-    <ErrorPopup/>
+    <ReConnectionToast/>
+    <ReConnectedToast/>
+    <ConnectionErrorToast/>
   </AppShell>
 
