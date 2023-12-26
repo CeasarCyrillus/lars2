@@ -21,7 +21,13 @@ export const createSessionService = (dependencies: SessionServiceDependencies): 
       return null
     }
 
-    return JSON.parse(item) as T
+    try {
+      return JSON.parse(item) as T
+    } catch (e) {
+      console.error(e)
+      console.error(`trying to parse "${item}" as json, stored in "${key}"`)
+      return null
+    }
   }
 
   const has = (key: string) => {

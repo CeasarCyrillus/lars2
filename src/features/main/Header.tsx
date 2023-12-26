@@ -2,14 +2,14 @@ import {HeaderStyled} from "./Header.style";
 import {LogoIcon} from "./LogoIcon";
 import {Navigation} from "./Navigation";
 import {LogoIconStyled} from "./LogoIcon.style";
-import {LanguageSelector} from "../languageSelect/LanguageSelector";
+import {LanguageButtons} from "../languageSelect/LanguageButtons";
 
 export const Header = () => {
   return <HeaderStyled>
     <LogoIconStyled>
       <LogoIcon/>
     </LogoIconStyled>
-    <LanguageSelector/>
+    <LanguageButtons/>
     <Navigation/>
   </HeaderStyled>
 }

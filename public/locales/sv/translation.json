@@ -14,5 +14,18 @@
   "fatalErrorTitle": "Hoppsan! Tekniska problem",
   "fatalErrorMessage": "Vi ber om ursäkt, men det verkar finnas ett problem i vårt system. Oroa dig inte, vi arbetar med det!",
   "fatalErrorPrompt": "Vänligen försök ladda om applikationen för att fortsätta.",
-  "fatalErrorButton": "Ladda om"
+  "fatalErrorButton": "Ladda om",
+  "reportStatus.not-started": "Ostartad",
+  "reportStatus.in-progress": "Påbörjad",
+  "reportStatus.approved": "Godkänd",
+  "reportStatus.past-deadline": "Försenad",
+  "reportGridHeader.period": "Period",
+  "reportGridHeader.teamName": "Lag",
+  "reportGridHeader.reporter.name": "Ansvarig",
+  "reportGridHeader.reporter.phone": "Mobil",
+  "reportGridHeader.reporter.email": "E-post",
+  "reportGridHeader.created": "Skapad",
+  "reports": "Rapporter",
+  "teams": "Lag",
+  "underConstruction": "Under konstruktion!"
 }

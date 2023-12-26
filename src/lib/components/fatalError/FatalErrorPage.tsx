@@ -2,10 +2,9 @@ import {FatalErrorPageStyled, FatalErrorPopup} from "./FatalErrorPage.style";
 import {Button, Heading, Text} from "@chakra-ui/react";
 import {ReactNode, useState} from "react";
 import {ChildrenProps} from "../../childrenProps";
-import {KnownError, UnknownError} from "../../../state/errorState";
 
 type Props = {
-  fatalError: KnownError | UnknownError
+  isError: boolean
   title?: ReactNode
   errorMessage?: ReactNode
   prompt?: ReactNode
@@ -15,9 +14,9 @@ type Props = {
   }
 } & ChildrenProps
 export const FatalErrorPage = (props: Props) => {
-  const {fatalError, title, errorMessage, prompt, button, children} = props
+  const {isError, title, errorMessage, prompt, button, children} = props
   const [isLoading, setIsLoading] = useState(false)
-  if (!fatalError) {
+  if (!isError) {
     return <>{children}</>
   }
   return <FatalErrorPageStyled>

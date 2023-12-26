@@ -1,6 +1,7 @@
-import {Observable, switchMap, tap} from "rxjs";
+import {Observable, switchMap} from "rxjs";
 import {SocketService} from "../socketService/socketService";
 import {AuthService} from "../authService/authService";
+import {ReportDTO} from "../../domain/ReportDTO";
 
 export type Report = {
   id: number,
@@ -12,7 +13,7 @@ export type Report = {
 }
 
 export type ReportService = {
-  reports$: () => Observable<Report[]>
+  reports$: () => Observable<ReportDTO[]>
 }
 
 type ReportServiceDependencies = {
@@ -23,11 +24,8 @@ type ReportServiceDependencies = {
 export const createReportService = (dependencies: ReportServiceDependencies): ReportService => {
   const {socketService, authService} = dependencies
   const reports$ = () => authService.user$().pipe(
-    tap((user) => {
-      console.log("CC: user!!!", user)
-    }),
     switchMap((user) => {
-      return socketService.listen$<Report[]>("reports")
+      return socketService.listen$<ReportDTO[]>("reports")
     })
   )
   return {

@@ -1,8 +1,9 @@
 import {bind} from "@react-rxjs/core";
 import {createSignal} from "@react-rxjs/utils";
-import {map, startWith} from "rxjs";
+import {distinctUntilChanged, map, startWith} from "rxjs";
+import {token_key} from "../services/sessionService/sessionService";
 
-type KnownErrorType = "popup" | "silent" | "server_unreachable"
+type KnownErrorType = "popup" | "silent" | "fatal_error"
 type UnknownErrorType = "unknown_fatal_error"
 type ErrorType = KnownErrorType | UnknownErrorType
 export type KnownError = {
@@ -45,7 +46,7 @@ export const incorrectLoginDetails: KnownError = {
 
 export const serverUnreachableError: KnownError = {
   message: "serverUnreachableError",
-  type: "server_unreachable",
+  type: "popup",
 }
 
 export const knownErrors: { [key: string]: KnownError } = {
@@ -65,15 +66,30 @@ const maybeError$ = error$.pipe(
   startWith(null)
 )
 
-const errorByType$ = (type: ErrorType) =>
-  maybeError$.pipe(
+const errorByType$ = (type: ErrorType) => {
+  return maybeError$.pipe(
     map(error => {
       if (error?.type === type) {
         return error
       }
       return null
     }),
-  )
+    distinctUntilChanged((a, b) => a?.type === b?.type && a?.message === b?.message)
+  );
+}
 
+export const reloadApp = () => {
+  localStorage.removeItem(token_key)
+  window.location.reload()
+}
+
+export const isAuthenticationError = (error: Error | KnownError | unknown): error is typeof authenticationError => {
+  return isKnownError(error) && error.message === authenticationError.message
+}
 export const [usePopupError] = bind(errorByType$("popup"))
-export const [useUnknownFatalError] = bind(errorByType$("unknown_fatal_error"))
+export const [useFatalError] = bind(errorByType$("fatal_error"))
+export const [useIsFatalError] = bind(errorByType$("fatal_error").pipe(
+  map(error => error !== null),
+  startWith(false),
+  distinctUntilChanged()
+))

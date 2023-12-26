@@ -1,31 +1,48 @@
 import React from 'react';
 import './i18n';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {ChakraProvider} from '@chakra-ui/react';
 import {theme} from './theme';
-import {HomePage} from "./features/home/HomePage";
-import {LoginPage} from "./features/login/LoginPage";
-import {ProtectedRoutes} from './lib/ProtectedRoutes';
 import {ErrorPopup} from "./features/main/error/ErrorPopup";
-import {UnknownFatalErrorPage} from "./features/main/error/fatalError/UnknownFatalErrorPage";
-import {Subscribe} from "@react-rxjs/core";
-import {socketService} from './services/socketService/api';
+import {Main} from "./features/home/Main";
+import {withSubscribe} from "./lib/withSubscribe";
+import {ChildrenProps} from "./lib/childrenProps";
+import {useIsAuthenticated} from "./state/authState";
+import {LoginPage} from "./features/login/LoginPage";
+import {AllToasts} from './lib/components/toasts/AllToasts';
+import {useHasFailedInitialConnection} from "./state/connectionState";
 
-export const App = () => {
-  return <Subscribe source$={socketService.isConnected$}>
+const Authenticated = withSubscribe((props: ChildrenProps) => {
+  const isAuthenticated = useIsAuthenticated()
+  if (!isAuthenticated) {
+    return <LoginPage/>
+  }
+  return <>{props.children}</>
+}, {fallback: "Authenticated"})
+
+const Connected = withSubscribe((props: ChildrenProps) => {
+  const {children} = props
+  const hasFailedInitialConnection = useHasFailedInitialConnection()
+  console.log("CC: hasFailedInitialConnection", hasFailedInitialConnection)
+  return <>{children}</>
+}, {fallback: "Connected"})
+
+const AppShell = withSubscribe((props: ChildrenProps) => {
+  const {children} = props
+  return (
     <ChakraProvider theme={theme}>
-      <UnknownFatalErrorPage>
-        <ErrorPopup/>
-        <BrowserRouter>
-          <Routes>
-            <Route path={"/"} element={<ProtectedRoutes/>}>
-              <Route path={"/"} element={<HomePage/>}/>
-            </Route>
-            <Route path={"/login"} element={<LoginPage/>}/>
-          </Routes>
-        </BrowserRouter>
-      </UnknownFatalErrorPage>
+      <Connected>
+        {children}
+      </Connected>
     </ChakraProvider>
-  </Subscribe>
-}
+  )
+}, {fallback: "AppShell"})
+
+export const App = () =>
+  <AppShell>
+    <Authenticated>
+      <Main/>
+    </Authenticated>
+    <AllToasts/>
+    <ErrorPopup/>
+  </AppShell>
 

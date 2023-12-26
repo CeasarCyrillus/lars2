@@ -1,9 +1,11 @@
-import {io} from "socket.io-client";
+import {io, ManagerOptions, SocketOptions} from "socket.io-client";
 import Config from "../../configuration.local.json"
-import {LoginService} from "../loginService/loginService";
-import {filter, firstValueFrom, Observable, shareReplay} from "rxjs";
-import {createSignal} from "@react-rxjs/utils";
-import {handleError, unknownFatalError} from "../../state/errorState";
+import {Observable, scan, startWith, Subject, tap} from "rxjs";
+import {handleError} from "../../state/errorState";
+import {AuthHeader} from "../../sharedTypes/AuthHeader";
+import {createSignal, mergeWithKey} from "@react-rxjs/utils";
+import {Observed} from "../../state/Observed";
+import {assertNever} from "../../state/assertNever";
 
 export const Success = "Success"
 export const Failure = "Failure"
@@ -12,59 +14,128 @@ export type Response<T> = {
   message?: T
 }
 
-export type MessageType = "user" | "connection" | "authentication" | "reports"
+export type MessageType = "user" | "connection" | "validateAuthentication" | "reports" | "login"
 export const isSuccess = <T>(response: Response<T>) => response.status === Success
 
 export type SocketService = {
-  send: (type: MessageType, message: any) => void,
   listen$: <T>(type: MessageType, message?: any) => Observable<T>
-  isConnected$: Observable<boolean>
+  setAuthHeader: (auth: AuthHeader) => void
+  connectionState$: Observable<ConnectionState>
 }
 
-type SocketServiceDependencies = {
-  loginService: LoginService
+const ioOptions: Partial<ManagerOptions & SocketOptions> = {
+  closeOnBeforeunload: true,
+  autoConnect: false,
+  rememberUpgrade: true,
+  reconnection: true,
 }
 
-export const createSocketService = (dependencies: SocketServiceDependencies): SocketService => {
-  const {loginService} = dependencies
-  const socket = io(Config.websocketURL, {autoConnect: true})
-  const handleConnectionError = (err?: Error) => {
-    handleError(unknownFatalError);
-    console.log("CC: not connected", err)
-    setIsConnected(false)
+
+export const createSocketService = (): SocketService => {
+  const socket = io(Config.websocketURL, ioOptions)
+  socket.onAny(console.log)
+  const onError = () => {
+    console.log("CC: connect error!")
+    retryConnection()
   }
-  const [isConnected$, setIsConnected] = createSignal<boolean>()
-  socket.on('connect_error', handleConnectionError)
-  socket.on('connect_failed', handleConnectionError)
-  socket.on("connect", () => setIsConnected(true))
 
-  const listen$ = <T>(type: MessageType, message: any) => {
-    const [signal$, setSignal] = createSignal<T>()
-    const listener = (response: any) => {
+  const onConnect = () => {
+    console.log("CC: connected!!")
+    connected()
+  }
+
+  socket.on("connect", onConnect)
+  socket.on('connect_error', onError)
+
+  const setAuthHeader = (auth: AuthHeader) => {
+    socket.auth = auth;
+  }
+
+  const listen$ = <T>(type: MessageType, request: any) => {
+    const subject$ = new Subject<T>()
+    console.log(`CC: request "${type}"`, request, "with auth:", socket.auth)
+    const listener = (response: Response<T>) => {
       console.log(`CC: response "${type}"`, response.message)
-      if (isSuccess(response)) {
-        console.log("CC: is success", type)
-        setSignal(response.message)
+      if (isSuccess(response) && response.message !== undefined) {
+        subject$.next(response.message)
       } else {
-        console.log("CC: is error", type)
-        handleError(response.message)
+        handleError(response)
+        subject$.error(response.message)
       }
     };
+
     socket.on(type, listener)
-    send(type, message);
-    return signal$.pipe(shareReplay({bufferSize: 1, refCount: false}))
+    socket.emit(type, request)
+    return subject$
   }
 
-  const send = async (type: MessageType, message: any) => {
-    const token = await firstValueFrom(loginService.token$.pipe(
-      filter(Boolean))
-    )
-    return socket.emit(type, {token, message});
-  };
-
   return {
-    send,
     listen$,
-    isConnected$
+    setAuthHeader,
+    connectionState$:
+      connectionState$.pipe(
+        tap(() => socket.connect())
+      )
   };
 }
+
+
+const maxReconnectionAttempts = 3
+const [retryConnection$, retryConnection] = createSignal<void>()
+const [connected$, connected] = createSignal<void>()
+type ConnectionStatus = "connecting" | "connected" | "re-connecting" | "re-connected" | "error"
+export type ConnectionState = {
+  status: ConnectionStatus
+  reconnectionAttempts: number
+}
+
+
+type Signal = Observed<typeof signals$>
+const signals$ = mergeWithKey({
+  retryConnection: retryConnection$,
+  connected: connected$
+})
+
+// TODO: use immer
+const connectionStateReducer = (current: ConnectionState, signal: Signal): ConnectionState => {
+  switch (signal.type) {
+    case "connected":
+      if (current.status !== "connecting") {
+        return {
+          status: "re-connected",
+          reconnectionAttempts: 0
+        }
+      }
+      return {
+        status: "connected",
+        reconnectionAttempts: 0
+      }
+    case "retryConnection":
+      const attempt = current.reconnectionAttempts + 1
+      if (attempt >= maxReconnectionAttempts) {
+        return {
+          status: "error",
+          reconnectionAttempts: attempt
+        }
+      }
+      return {
+        status: "re-connecting",
+        reconnectionAttempts: current.reconnectionAttempts + 1
+      }
+    default:
+      assertNever(signal)
+  }
+
+  return initialState
+}
+
+const initialState: ConnectionState = {
+  status: "connecting",
+  reconnectionAttempts: 0
+}
+
+const connectionState$: Observable<ConnectionState> = signals$.pipe(
+  scan(connectionStateReducer, initialState),
+  startWith(initialState),
+  tap((state) => console.log("CC: state is", state.status))
+)
