@@ -1,26 +1,27 @@
-import {io, ManagerOptions, SocketOptions} from "socket.io-client";
+import {io, ManagerOptions, Socket, SocketOptions} from "socket.io-client";
 import Config from "../../../configuration.local.json"
-import {Observable, scan, startWith, Subject, tap} from "rxjs";
-import {AuthHeader} from "../dto/AuthHeader";
+import {fromEventPattern, map, Observable, scan, shareReplay, startWith, tap} from "rxjs";
 import {createSignal, mergeWithKey} from "@react-rxjs/utils";
 import {Observed} from "../../lib/Observed";
 import {assertNever} from "../../lib/assertNever";
 import {produce} from "immer";
 
-export const Success = "Success"
-export const Failure = "Failure"
-export type Response<T> = {
-  status: typeof Success | typeof Failure
-  message?: T
-}
+import {NodeEventHandler} from "rxjs/internal/observable/fromEvent";
 
-export type MessageType = "user" | "connection" | "validateAuthentication" | "reports" | "login"
-export const isSuccess = <T>(response: Response<T>) => response.status === Success
+import {LoginDetails} from "@backend/dto/LoginDetails";
+import {Authentication} from "@backend/dto/Authentication";
+import {User} from "@backend/dto/User";
+import {Report} from "@backend/dto/Report";
+import {ClientToServerEvents, EventName, ServerToClientEvents} from "@backend/socket/Socket";
+import {Response} from "@backend/socket/Response";
 
 export type SocketService = {
-  listen$: <T>(type: MessageType, message?: any) => Observable<T>
-  setAuthHeader: (auth: AuthHeader) => void
-  connectionState$: Observable<ConnectionState>
+  connected$: () => Observable<boolean>
+  connectionError$: () => Observable<boolean>
+  user$: () => Observable<User>
+  validateAuthentication$: (authentication: Authentication) => Observable<boolean>
+  reports$: () => Observable<Report[]>
+  login$: (loginDetails: LoginDetails) => Observable<Authentication>
 }
 
 const ioOptions: Partial<ManagerOptions & SocketOptions> = {
@@ -30,48 +31,70 @@ const ioOptions: Partial<ManagerOptions & SocketOptions> = {
   reconnection: true,
 }
 
+const userEvent: EventName = "user"
+const validateAuthenticationEvent: EventName = "validateAuthentication"
+const reportsEvent: EventName = "reports"
+const loginEvent: EventName = "login"
 
 export const createSocketService = (): SocketService => {
-  const socket = io(Config.websocketURL, ioOptions)
-  const onError = () => {
-    retryConnection()
-  }
+  const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(Config.websocketURL, ioOptions)
 
-  const onConnect = () => {
-    connected()
-  }
+  const subscribeToEvent$ = <T>(eventName: "connect" | "connect_error" | EventName) => fromEventPattern<Response<T>>((handler: NodeEventHandler) => {
+    socket.on(eventName, handler)
+  }).pipe(shareReplay({bufferSize: 1, refCount: false}))
 
-  socket.on("connect", onConnect)
-  socket.on('connect_error', onError)
-
-  const setAuthHeader = (auth: AuthHeader) => {
+  const setAuthHeader = (auth: Authentication) => {
     socket.auth = auth;
   }
-
-  const listen$ = <T>(type: MessageType, request: any) => {
-    const subject$ = new Subject<T>()
-    console.log(`request "${type}"`, request, "with auth:", socket.auth ?? "NONE")
-    const listener = (response: Response<T>) => {
-      console.log(`response "${type}"`, response.message ?? "NONE")
-      if (isSuccess(response) && response.message !== undefined) {
-        subject$.next(response.message)
-      } else {
-        subject$.error(response.message)
-      }
-    };
-
-    socket.on(type, listener)
-    socket.emit(type, request)
-    return subject$
-  }
-
   return {
-    listen$,
-    setAuthHeader,
-    connectionState$:
-      connectionState$.pipe(
-        tap(() => socket.connect())
+    connected$: () => {
+      socket.connect()
+      return subscribeToEvent$<void>("connect")
+        .pipe(
+          tap(() => {
+            console.log("CC: CONNECTED!");
+          }),
+          map(() => true),
+          startWith(false)
+        );
+    },
+
+    connectionError$: () => subscribeToEvent$<boolean>("connect_error")
+      .pipe(
+        tap(console.error),
+        startWith(false)
+      ),
+
+
+    user$: () => {
+      socket.emit(userEvent)
+      return subscribeToEvent$<User>(userEvent).pipe(
+        map(response => response.payload)
+      );
+    },
+
+    reports$: () => {
+      socket.emit(reportsEvent)
+      return subscribeToEvent$<Report[]>(reportsEvent).pipe(
+        map(response => response.payload)
       )
+    },
+
+    validateAuthentication$: (authentication: Authentication) => {
+      socket.emit(validateAuthenticationEvent, authentication)
+      return subscribeToEvent$<boolean>(validateAuthenticationEvent).pipe(
+        map(response => response.payload),
+        tap(token => setAuthHeader(authentication))
+      );
+    },
+
+    login$: (loginDetails: LoginDetails) => {
+      socket.emit(loginEvent, loginDetails)
+      return subscribeToEvent$<Authentication>(loginEvent).pipe(
+        map(response => response.payload),
+        tap((authentication) => setAuthHeader(authentication))
+      )
+    },
   };
 }
 

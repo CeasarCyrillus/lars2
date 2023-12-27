@@ -1,11 +1,11 @@
 import {Observable, of, startWith, Subject, switchMap, tap} from "rxjs";
 import {SocketService} from "../socketService/socketService";
 import {SessionService, token_key} from "../sessionService/sessionService";
-import {AuthHeader} from "../dto/AuthHeader";
+import {Authentication} from "../../../../../lars2_backend/src/sharedTypes/dto/Authentication";
 
 export type AuthService = {
   isAuthenticated$: () => Observable<boolean>
-  login$: (username: string, password: string) => Observable<AuthHeader>
+  login$: (username: string, password: string) => Observable<Authentication>
 }
 
 export type AuthServiceDependencies = {
@@ -14,20 +14,18 @@ export type AuthServiceDependencies = {
 }
 export const createAuthService = (dependencies: AuthServiceDependencies): AuthService => {
   const {socketService, sessionService} = dependencies
-  const loginAuthHeaderSubject$ = new Subject<AuthHeader>()
+  const loginAuthHeaderSubject$ = new Subject<Authentication>()
   const loginAuthHeader$ = loginAuthHeaderSubject$.pipe(
     startWith(null)
   )
-  const getStoredToken = () => sessionService.get<AuthHeader>(token_key)
+  const getStoredToken = () => sessionService.get<Authentication>(token_key)
 
-  const updateAuthHeader = (authHeader: AuthHeader) => {
-    socketService.setAuthHeader(authHeader)
+  const updateAuthHeader = (authHeader: Authentication) => {
     sessionService.set(token_key, authHeader)
     loginAuthHeaderSubject$.next(authHeader)
   }
 
-  const storedTokenIsValid$ = (storedAuth: AuthHeader) =>
-    socketService.listen$<boolean>("validateAuthentication", storedAuth)
+  const storedTokenIsValid$ = (storedAuth: Authentication) => socketService.validateAuthentication$(storedAuth)
 
   const isAuthenticated$ = () => {
     return loginAuthHeader$.pipe(
@@ -48,7 +46,7 @@ export const createAuthService = (dependencies: AuthServiceDependencies): AuthSe
   }
 
   const login$ = (username: string, password: string) =>
-    socketService.listen$<AuthHeader>("login", {username, password}).pipe(
+    socketService.login$({username, password}).pipe(
       tap(authHeader => updateAuthHeader(authHeader))
     )
 

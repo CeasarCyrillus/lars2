@@ -1,1 +1,0 @@
-export type ReportStatus = "not-started" | "in-progress" | "approved" | "past-deadline"

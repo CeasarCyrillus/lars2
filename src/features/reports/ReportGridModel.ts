@@ -1,7 +1,7 @@
 import {ColDef, Column} from "ag-grid-community";
-import {Report} from "../../common/services/dto/Report";
+import {Report} from "../../../../lars2_backend/src/sharedTypes/dto/Report";
 import {ReportStatusCell, ReportStatusProp, TranslatedHeader, TranslatedHeaderProps} from "./renderers";
-import {ReportStatus} from "../../common/services/dto/ReportStatus";
+import {ReportStatus} from "../../../../lars2_backend/src/sharedTypes/dto/ReportStatus";
 
 const getPeriod = (period: string) => {
   const date = new Date(period)

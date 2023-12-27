@@ -1,26 +1,24 @@
-import {distinctUntilChanged, first, map, pairwise} from "rxjs";
+import {map, merge, pairwise, tap} from "rxjs";
 import {bind} from "@react-rxjs/core";
 import {socketService} from "../services/socketService/api";
 
 
-export const [useIsReconnecting] = bind(socketService.connectionState$.pipe(
-  map(state => state.status === "re-connecting"),
-  distinctUntilChanged()
-))
+export const [useIsReconnecting] = bind(
+  merge(socketService.connected$(), socketService.connectionError$()).pipe(
+    pairwise(),
+    map(([first, second]) => first && second)
+  ))
 
-export const [useIsReconnected] = bind(socketService.connectionState$.pipe(
-  map(state => state.status === "re-connected"),
-  distinctUntilChanged()
-))
+export const [useIsReconnected] = bind(
+  merge(socketService.connected$(), socketService.connectionError$()).pipe(
+    pairwise(),
+    map(([first, second]) => second && !first)
+  ))
 
-export const [useIsConnectionError] = bind(socketService.connectionState$.pipe(
-  map(state => state.status === "error"),
-  distinctUntilChanged()
-))
+export const [useIsConnectionError] = bind(socketService.connectionError$())
 
-export const [useHasFailedInitialConnection] = bind(socketService.connectionState$.pipe(
-  map(state => state.status),
+export const [useHasFailedInitialConnection] = bind(merge(socketService.connectionError$(), socketService.connected$()).pipe(
+  tap((x) => console.log("CC: here", x)),
   pairwise(),
-  first(),
-  map(([firstStatus, nextStatus]) => firstStatus === "connecting" && nextStatus !== "connected")
+  map(([first, second]) => first && second)
 ))

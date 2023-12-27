@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "paths": {
+      "@backend/*": ["../lars2_backend/src/sharedTypes/*"]
+    },
     "target": "es5",
     "lib": [
       "dom",
