@@ -3,7 +3,8 @@ import {withSubscribe} from "./common/lib/withSubscribe";
 import {Header} from "./common/components/header/Header";
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from "@chakra-ui/react";
 import {useTranslation} from "react-i18next";
-import {ReportGrid} from "./features/reports/reportGrid";
+import {TeamGrid} from "./features/teams/TeamGrid";
+import {ReportGrid} from "./features/reports/ReportGrid";
 import {TooltipUnderConstruction} from "./common/components/TooltipUnderConstruction";
 
 
@@ -30,6 +31,9 @@ export const Main = withSubscribe(() => {
       <TabPanels height={"100%"}>
         <TabPanel sx={{height: "100%"}}>
           <ReportGrid/>
+        </TabPanel>
+        <TabPanel sx={{height: "100%"}}>
+          <TeamGrid/>
         </TabPanel>
       </TabPanels>
     </Tabs>

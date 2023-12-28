@@ -1,17 +1,20 @@
 import {AgGridReact} from "ag-grid-react";
-import {colDefs} from "./ReportGridModel";
 import {Box} from "@chakra-ui/react";
-import {useReports} from "../../common/state/reportState";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+import {ColDef} from "ag-grid-community";
 
-export const ReportGrid = () => {
-  const reports = useReports()
+type GridProps<T> = {
+  rows: T[]
+  columnDefs: ColDef<T>[]
+}
+export const Grid = <T, >(props: GridProps<T>) => {
+  const {rows, columnDefs} = props
   return <Box sx={{width: "100%", height: "100%"}}>
     <AgGridReact
       autoSizeStrategy={{type: "fitGridWidth"}}
-      rowData={reports}
-      columnDefs={colDefs}
+      rowData={rows}
+      columnDefs={columnDefs}
       className={"ag-theme-quartz"}/>
   </Box>
 }

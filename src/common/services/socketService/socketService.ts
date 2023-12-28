@@ -14,6 +14,7 @@ import {User} from "@backend/dto/User";
 import {Report} from "@backend/dto/Report";
 import {ClientToServerEvents, EventName, ServerToClientEvents} from "@backend/socket/Socket";
 import {Response} from "@backend/socket/Response";
+import {Team} from "@backend/dto/Team";
 
 export type SocketService = {
   connected$: () => Observable<boolean>
@@ -22,6 +23,7 @@ export type SocketService = {
   validateAuthentication$: (authentication: Authentication) => Observable<boolean>
   reports$: () => Observable<Report[]>
   login$: (loginDetails: LoginDetails) => Observable<Authentication>
+  teams$: () => Observable<Team[]>
 }
 
 const ioOptions: Partial<ManagerOptions & SocketOptions> = {
@@ -35,6 +37,7 @@ const userEvent: EventName = "user"
 const validateAuthenticationEvent: EventName = "validateAuthentication"
 const reportsEvent: EventName = "reports"
 const loginEvent: EventName = "login"
+const teamsEvent: EventName = "teams"
 
 export const createSocketService = (): SocketService => {
   const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(Config.websocketURL, ioOptions)
@@ -95,6 +98,13 @@ export const createSocketService = (): SocketService => {
         tap((authentication) => setAuthHeader(authentication))
       )
     },
+
+    teams$: () => {
+      socket.emit(teamsEvent)
+      return subscribeToEvent$<Team[]>(teamsEvent).pipe(
+        map(response => response.payload)
+      )
+    }
   };
 }
 
