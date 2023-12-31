@@ -1,6 +1,6 @@
 import {Observable} from "rxjs";
 import {SocketService} from "../socketService/socketService";
-import {Report} from "../../../../../lars2_backend/src/sharedTypes/dto/Report";
+import {Report} from "@backend/dto/Report";
 
 export type ReportService = {
   reports$: () => Observable<Report[]>
@@ -12,7 +12,9 @@ type ReportServiceDependencies = {
 
 export const createReportService = (dependencies: ReportServiceDependencies): ReportService => {
   const {socketService} = dependencies
+  const reports$ = () => socketService.reports$()
+
   return {
-    reports$: socketService.reports$
+    reports$
   }
 }

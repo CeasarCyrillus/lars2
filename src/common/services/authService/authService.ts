@@ -1,11 +1,11 @@
-import {Observable, of, startWith, Subject, switchMap, tap} from "rxjs";
+import {map, Observable, of, startWith, Subject, switchMap, tap} from "rxjs";
 import {SocketService} from "../socketService/socketService";
 import {SessionService, token_key} from "../sessionService/sessionService";
-import {Authentication} from "../../../../../lars2_backend/src/sharedTypes/dto/Authentication";
+import {Authentication} from "@backend/dto/Authentication";
 
 export type AuthService = {
   isAuthenticated$: () => Observable<boolean>
-  login$: (username: string, password: string) => Observable<Authentication>
+  login$: (username: string, password: string) => Observable<void>
 }
 
 export type AuthServiceDependencies = {
@@ -20,9 +20,10 @@ export const createAuthService = (dependencies: AuthServiceDependencies): AuthSe
   )
   const getStoredToken = () => sessionService.get<Authentication>(token_key)
 
-  const updateAuthHeader = (authHeader: Authentication) => {
-    sessionService.set(token_key, authHeader)
-    loginAuthHeaderSubject$.next(authHeader)
+  const updateAuthHeader = (authentication: Authentication) => {
+    sessionService.set(token_key, authentication)
+    socketService.setSocketAuthentication(authentication)
+    loginAuthHeaderSubject$.next(authentication)
   }
 
   const storedTokenIsValid$ = (storedAuth: Authentication) => socketService.validateAuthentication$(storedAuth)
@@ -45,13 +46,14 @@ export const createAuthService = (dependencies: AuthServiceDependencies): AuthSe
     )
   }
 
-  const login$ = (username: string, password: string) =>
+  const login$ = (username: string, password: string): Observable<void> =>
     socketService.login$({username, password}).pipe(
-      tap(authHeader => updateAuthHeader(authHeader))
+      tap(updateAuthHeader),
+      map(() => undefined)
     )
 
   return {
     isAuthenticated$,
-    login$,
+    login$
   }
 }

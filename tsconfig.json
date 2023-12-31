@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "paths": {
-      "@backend/*": ["../lars2_backend/src/sharedTypes/*"]
+      "@backend/*": [
+        "../lars2_backend/src/sharedTypes/*"
+      ]
     },
     "target": "es5",
     "lib": [
@@ -18,6 +20,7 @@
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "experimentalDecorators": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,

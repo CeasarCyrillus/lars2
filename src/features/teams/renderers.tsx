@@ -1,6 +1,6 @@
+import {ReportStatus} from "@backend/dto/ReportStatus";
 import {Box, Tag} from "@chakra-ui/react";
 import {useTranslation} from "react-i18next";
-import {ReportStatus} from "../../../../lars2_backend/src/sharedTypes/dto/ReportStatus";
 
 const useTranslated = (prefix: string) =>
   function useTranslated(key: string) {
