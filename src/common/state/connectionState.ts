@@ -1,24 +1,71 @@
-import {map, merge, pairwise, tap} from "rxjs";
-import {bind} from "@react-rxjs/core";
+import {map, Observable, scan, shareReplay, startWith} from "rxjs";
 import {socketService} from "../services/socketService/api";
+import {mergeWithKey} from "@react-rxjs/utils";
+import {Observed} from "../lib/Observed";
+import {produce} from "immer";
+import {assertNever} from "../lib/assertNever";
+import {bind} from "@react-rxjs/core";
 
 
-export const [useIsReconnecting] = bind(
-  merge(socketService.connected$(), socketService.connectionError$()).pipe(
-    pairwise(),
-    map(([first, second]) => first && second)
-  ))
+const maxReconnectionAttempts = 4
+type ConnectionStatus = "connecting" | "connected" | "re-connecting" | "re-connected" | "error"
+export type ConnectionState = {
+  status: ConnectionStatus
+  reconnectionAttempts: number
+}
 
-export const [useIsReconnected] = bind(
-  merge(socketService.connected$(), socketService.connectionError$()).pipe(
-    pairwise(),
-    map(([first, second]) => second && !first)
-  ))
+type Signal = Observed<typeof signals$>
+const signals$ = mergeWithKey({
+  isConnected: socketService.connected$(),
+  isError: socketService.connectionError$()
+})
 
-export const [useIsConnectionError] = bind(socketService.connectionError$())
+const connectionStateReducer = (current: ConnectionState, signal: Signal): ConnectionState =>
+  produce(current, draft => {
+      console.log("CC:", signal)
+      switch (signal.type) {
+        case "isConnected":
+          draft.status = current.status !== "connecting" ?
+            "re-connected" :
+            "connected"
+          draft.reconnectionAttempts = 0
+          break
+        case "isError":
+          const attempts = current.reconnectionAttempts + 1
+          draft.reconnectionAttempts = attempts
+          draft.status = attempts >= maxReconnectionAttempts ?
+            "error" :
+            "re-connecting";
+          break
+        default:
+          assertNever(signal)
+      }
+    }
+  )
 
-export const [useHasFailedInitialConnection] = bind(merge(socketService.connectionError$(), socketService.connected$()).pipe(
-  tap((x) => console.log("CC: here", x)),
-  pairwise(),
-  map(([first, second]) => first && second)
+const initialState: ConnectionState = {
+  status: "connecting",
+  reconnectionAttempts: 0
+}
+
+const connectionState$: Observable<ConnectionState> = signals$.pipe(
+  scan(connectionStateReducer, initialState),
+  startWith(initialState),
+  shareReplay()
+)
+
+export const [useIsConnectionError] = bind(connectionState$.pipe(
+  map(state => state.status === "error")
+))
+
+export const [useIsConnected] = bind(connectionState$.pipe(
+  map(state => state.status === "connected")
+))
+
+export const [useIsReConnected] = bind(connectionState$.pipe(
+  map(state => state.status === "re-connected")
+))
+
+export const [useIsReConnecting] = bind(connectionState$.pipe(
+  map(state => state.status === "re-connecting")
 ))

@@ -1,0 +1,5 @@
+{
+  "incorrectUsernameTitle": "Incorrect username",
+  "incorrectUsernameDescription": "The user does not exist",
+  "authenticationErrorTitle": "Could not validate login"
+}

@@ -18,7 +18,6 @@ export const Toast = (props: Props) => {
   useEffect(() => {
     if (show && !toast.isActive(toastId)) {
       toast({
-        id: toastId,
         title: title,
         description: description,
         status: status,
@@ -26,7 +25,7 @@ export const Toast = (props: Props) => {
         isClosable: isClosable,
       })
     }
-    
+
     return () => toast.close(toastId)
   }, [description, duration, isClosable, show, status, t, title, toast, toastId])
 

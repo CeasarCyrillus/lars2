@@ -26,8 +26,6 @@ export const createAuthService = (dependencies: AuthServiceDependencies): AuthSe
     loginAuthHeaderSubject$.next(authentication)
   }
 
-  const storedTokenIsValid$ = (storedAuth: Authentication) => socketService.validateAuthentication$(storedAuth)
-
   const isAuthenticated$ = () => {
     return loginAuthHeader$.pipe(
       switchMap((freshToken) => {
@@ -39,7 +37,7 @@ export const createAuthService = (dependencies: AuthServiceDependencies): AuthSe
           return of(false)
         }
 
-        return storedTokenIsValid$(storedToken).pipe(
+        return socketService.validateAuthentication$(storedToken).pipe(
           tap(isValid => isValid && updateAuthHeader(storedToken)),
         );
       })
@@ -49,7 +47,7 @@ export const createAuthService = (dependencies: AuthServiceDependencies): AuthSe
   const login$ = (username: string, password: string): Observable<void> =>
     socketService.login$({username, password}).pipe(
       tap(updateAuthHeader),
-      map(() => undefined)
+      map(() => undefined),
     )
 
   return {

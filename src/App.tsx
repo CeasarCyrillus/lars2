@@ -9,7 +9,7 @@ import {LoginPage} from "./common/components/login/LoginPage";
 import {ReConnectionToast} from "./common/components/toasts/connectionToasts/ReConnectingToast";
 import {ReConnectedToast} from "./common/components/toasts/connectionToasts/ReConnectedToast";
 import {ConnectionErrorToast} from "./common/components/toasts/connectionToasts/ConnectionErrorToast";
-import {ConnectionErrorPage} from './common/components/error/ConnectionErrorPage';
+import {ErrorToast} from "./common/components/toasts/ErrorToast";
 
 const Authenticated = withSubscribe((props: ChildrenProps) => {
   const isAuthenticated = useIsAuthenticated()
@@ -23,9 +23,7 @@ const AppShell = withSubscribe((props: ChildrenProps) => {
   const {children} = props
   return (
     <ChakraProvider theme={theme}>
-      <ConnectionErrorPage>
-        {children}
-      </ConnectionErrorPage>
+      {children}
     </ChakraProvider>
   )
 }, {fallback: "AppShell"})
@@ -38,5 +36,6 @@ export const App = () =>
     <ReConnectionToast/>
     <ReConnectedToast/>
     <ConnectionErrorToast/>
+    <ErrorToast/>
   </AppShell>
 

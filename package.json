@@ -18,6 +18,7 @@
     "@types/react-dom": "^18.2.15",
     "ag-grid-community": "^31.0.1",
     "ag-grid-react": "^31.0.1",
+    "class-transformer": "^0.5.1",
     "country-flag-icons": "^1.5.9",
     "framer-motion": "^10.16.5",
     "i18next": "^23.7.6",
