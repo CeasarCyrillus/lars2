@@ -15,7 +15,7 @@ export const ErrorToast = withSubscribe(() => {
     title={t(errorTitle)}
     description={t(description)}
     status={"error"}
-    duration={6000}
+    duration={4000}
     isClosable={true}
   />
 })

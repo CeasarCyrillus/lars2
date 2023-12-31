@@ -20,3 +20,6 @@ export const handleError = <T extends AllErrors>(error: ErrorResponse<T> | any) 
 export const [useError] = bind(errorState$.pipe(
   startWith(null))
 )
+
+//TODO: this is to make sure that toasts can be shown again if the same error happens
+export const clearError = () => setErrorState(null)

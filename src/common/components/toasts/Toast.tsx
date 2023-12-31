@@ -1,6 +1,7 @@
 import {useToast} from "@chakra-ui/react";
 import {useTranslation} from "react-i18next";
 import {useEffect} from "react";
+import {clearError} from "../../state/errorState";
 
 type Props = {
   toastId: string,
@@ -23,6 +24,7 @@ export const Toast = (props: Props) => {
         status: status,
         duration: duration,
         isClosable: isClosable,
+        onCloseComplete: clearError
       })
     }
 
