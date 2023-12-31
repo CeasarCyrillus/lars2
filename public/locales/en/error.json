@@ -1,5 +1,6 @@
 {
   "incorrectUsernameTitle": "Incorrect username",
   "incorrectUsernameDescription": "The user does not exist",
-  "authenticationErrorTitle": "Could not validate login"
+  "incorrectPasswordTitle": "Incorrect password",
+  "incorrectPasswordDescription": "The password supplied is incorrect, try again"
 }

@@ -19,6 +19,7 @@ export const Toast = (props: Props) => {
   useEffect(() => {
     if (show && !toast.isActive(toastId)) {
       toast({
+        id: toastId,
         title: title,
         description: description,
         status: status,

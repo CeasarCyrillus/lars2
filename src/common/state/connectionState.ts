@@ -22,7 +22,6 @@ const signals$ = mergeWithKey({
 
 const connectionStateReducer = (current: ConnectionState, signal: Signal): ConnectionState =>
   produce(current, draft => {
-      console.log("CC:", signal)
       switch (signal.type) {
         case "isConnected":
           draft.status = current.status !== "connecting" ?
@@ -51,7 +50,7 @@ const initialState: ConnectionState = {
 const connectionState$: Observable<ConnectionState> = signals$.pipe(
   scan(connectionStateReducer, initialState),
   startWith(initialState),
-  shareReplay()
+  shareReplay(),
 )
 
 export const [useIsConnectionError] = bind(connectionState$.pipe(

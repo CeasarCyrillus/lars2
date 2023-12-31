@@ -14,7 +14,7 @@ export const LoadingButton = (props: Props) => {
     variant="solid"
     colorScheme="orange"
     width="full"
-    type={"button"}
+    type={"submit"}
   >
     {label}
   </Button>
