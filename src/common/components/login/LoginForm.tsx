@@ -1,4 +1,4 @@
-import {EmailInput} from "./EmailInput";
+import {UsernameInput} from "./UsernameInput";
 import {PasswordInput} from "./PasswordInput";
 import {LoginButton} from "./LoginButton";
 import {useState} from "react";
@@ -7,13 +7,13 @@ import {isLoading} from "../../lib/useMutation";
 import {LoginFormStyled} from "./LoginForm.style";
 
 export const LoginForm = () => {
-  const [email, setEmail] = useState("")
+  const [email, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [result, login] = useLogin()
 
   const isValid = email && password
   return <LoginFormStyled>
-    <EmailInput value={email} onChange={setEmail}/>
+    <UsernameInput value={email} onChange={setUsername}/>
     <PasswordInput value={password} onChange={setPassword}/>
     <LoginButton
       isDisabled={!isValid}

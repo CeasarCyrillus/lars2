@@ -7,7 +7,7 @@ type Props = {
   onChange: (newValue: string) => void
 }
 
-export const EmailInput = (props: Props) => {
+export const UsernameInput = (props: Props) => {
   const {value, onChange} = props
   const {t} = useTranslation()
   return <FormControl>
@@ -20,8 +20,7 @@ export const EmailInput = (props: Props) => {
       <Input
         isRequired={true}
         value={value}
-        type="email"
-        placeholder={t("emailPlaceholder")}
+        placeholder={t("usernamePlaceholder")}
         onChange={(e) => onChange(e.target.value)}
       />
     </InputGroup>

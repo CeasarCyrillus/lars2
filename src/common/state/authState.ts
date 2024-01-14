@@ -7,3 +7,5 @@ export const useLogin = () => useMutation((username: string, password: string) =
   return firstValueFrom(authService.login$(username, password));
 })
 export const [useIsAuthenticated] = bind(authService.isAuthenticated$)
+
+export const useLogout = () => authService.logout

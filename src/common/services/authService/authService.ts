@@ -6,6 +6,7 @@ import {Authentication} from "@backend/dto/Authentication";
 export type AuthService = {
   isAuthenticated$: () => Observable<boolean>
   login$: (username: string, password: string) => Observable<void>
+  logout: () => void
 }
 
 export type AuthServiceDependencies = {
@@ -50,8 +51,14 @@ export const createAuthService = (dependencies: AuthServiceDependencies): AuthSe
       map(() => undefined),
     )
 
+  const logout = () => {
+    sessionService.remove(token_key)
+    window.location.reload()
+  }
+
   return {
     isAuthenticated$,
-    login$
+    login$,
+    logout
   }
 }

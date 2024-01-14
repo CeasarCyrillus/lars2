@@ -1,5 +1,5 @@
 {
-  "emailPlaceholder": "email address",
+  "usernamePlaceholder": "username/email address",
   "passwordPlaceholder": "password",
   "hidePassword": "Hide",
   "showPassword": "Show",

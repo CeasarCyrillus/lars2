@@ -1,6 +1,7 @@
 type Provider = {
   setItem: (key: string, value: string) => void
   getItem: (key: string) => string | null
+  removeItem: (key: string) => void
 }
 
 type SessionServiceDependencies = {
@@ -11,6 +12,7 @@ export type SessionService = {
   get: <T>(key: string) => T | null
   set: <T>(key: string, value: T) => void
   has: (key: string) => boolean
+  remove: (key: string) => void
 }
 
 export const createSessionService = (dependencies: SessionServiceDependencies): SessionService => {
@@ -39,10 +41,15 @@ export const createSessionService = (dependencies: SessionServiceDependencies): 
     provider.setItem(key, JSON.stringify(value))
   }
 
+  const remove = (key: string) => {
+    provider.removeItem(key)
+  }
+
   return {
     get,
     has,
-    set
+    set,
+    remove
   }
 }
 

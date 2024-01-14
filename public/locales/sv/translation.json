@@ -1,5 +1,5 @@
 {
-  "emailPlaceholder": "e-post",
+  "usernamePlaceholder": "användarnamn/e-post",
   "passwordPlaceholder": "lösenord",
   "hidePassword": "Dölj",
   "showPassword": "Visa",
