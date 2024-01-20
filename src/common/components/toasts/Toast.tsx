@@ -1,4 +1,4 @@
-import {Alert, CircularProgress, Snackbar, Typography} from "@mui/material";
+import {Alert, CircularProgress, Slide, SlideProps, Snackbar, Typography} from "@mui/material";
 
 type Props = {
   show: boolean,
@@ -17,7 +17,9 @@ export const Toast = (props: Props) => {
     anchorOrigin={{vertical: "bottom", horizontal: "center"}}
     open={show}
     autoHideDuration={duration}
+    TransitionComponent={SlideUp}
     onClose={onClose}>
+
     <Alert
       severity={muiStatus}
       onClose={onClose}
@@ -28,3 +30,5 @@ export const Toast = (props: Props) => {
     </Alert>
   </Snackbar>
 }
+
+const SlideUp = (props: SlideProps) => <Slide direction="up" {...props}/>;

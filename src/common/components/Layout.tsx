@@ -3,10 +3,12 @@ import {ChildrenProps} from "../lib/childrenProps";
 import {Header} from "./header/Header";
 import {LayoutWrapper} from "./Layout.style";
 
-export const Layout = (props: ChildrenProps) => {
-  const {children} = props
+type Props = { hideHeader?: boolean } & ChildrenProps
+export const Layout = (props: Props) => {
+  const {children, hideHeader} = props
+
   return <LayoutWrapper>
-    <Header/>
+    {!hideHeader && <Header/>}
     {children}
   </LayoutWrapper>
 }

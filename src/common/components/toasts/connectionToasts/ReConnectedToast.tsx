@@ -11,6 +11,6 @@ export const ReConnectedToast = withSubscribe(() => {
     title={t("reconnectedTitle")}
     description={t("reconnectedDescription")}
     status={"success"}
-    duration={3000}
+    duration={5000}
   />
 })

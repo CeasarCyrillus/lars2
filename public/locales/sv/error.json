@@ -1,0 +1,6 @@
+{
+  "fatalErrorTitle": "Hoppsan! Tekniska problem",
+  "fatalErrorMessage": "Vi ber om ursäkt, men det verkar finnas ett problem i vårt system. Oroa dig inte, vi arbetar med det!",
+  "fatalErrorPrompt": "Vänligen försök ladda om applikationen för att fortsätta.",
+  "fatalErrorButton": "Ladda om"
+}

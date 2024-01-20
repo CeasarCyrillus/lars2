@@ -41,7 +41,7 @@ export const createAuthService = (dependencies: AuthServiceDependencies): AuthSe
         return socketService.validateAuthentication$(storedToken).pipe(
           tap(isValid => isValid && updateAuthHeader(storedToken)),
         );
-      })
+      }),
     )
   }
 

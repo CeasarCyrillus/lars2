@@ -41,7 +41,6 @@ const teamsEvent: EventName = "teams"
 
 const subscribeToEvent = (socket: Socket) => <T>(eventName: EventName): Observable<T> =>
   fromEventPattern<Response<T, AllErrors>>((handler: NodeEventHandler) => {
-    socket.connect()
     socket.on(eventName, handler)
   }).pipe(
     map(response => {

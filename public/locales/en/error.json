@@ -2,5 +2,9 @@
   "incorrectUsernameTitle": "Incorrect username",
   "incorrectUsernameDescription": "The user does not exist",
   "incorrectPasswordTitle": "Incorrect password",
-  "incorrectPasswordDescription": "The password supplied is incorrect, try again"
+  "incorrectPasswordDescription": "The password supplied is incorrect, try again",
+  "fatalErrorTitle": "Uh-oh! Technical Difficulties",
+  "fatalErrorMessage": "We apologize, but it seems there's a hiccup in our system. Don't worry, we're on it!",
+  "fatalErrorPrompt": "Please try reloading the application to continue.",
+  "fatalErrorButton": "Reload"
 }

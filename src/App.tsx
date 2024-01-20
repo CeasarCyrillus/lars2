@@ -13,31 +13,53 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import {FatalErrorPage} from "./common/components/FatalErrorPage";
+import {CssBaseline} from "@mui/material";
+import {FullPageLoadingSpinner} from "./common/components/FullPageLoadingSpinner";
+import {useIsFatalError} from "./common/state/connectionState";
 
-import {CssBaseline} from '@mui/material';
-
-const Authenticated = withSubscribe((props: ChildrenProps) => {
+const Authenticated = (props: ChildrenProps) => {
   const isAuthenticated = useIsAuthenticated()
   if (!isAuthenticated) {
     return <LoginPage/>
   }
   return <>{props.children}</>
-}, {fallback: "Authenticated"})
+}
+
+const LoadingComponent = () => {
+  if (process.env.NODE_ENV !== "development") {
+    return <FullPageLoadingSpinner/>
+  }
+
+  return null
+}
+
+const ConnectionError = (props: ChildrenProps) => {
+  const {children} = props
+  const isFatalError = useIsFatalError()
+  return isFatalError ? <FatalErrorPage/> : <>{children}</>
+}
 
 const AppShell = withSubscribe((props: ChildrenProps) => {
   const {children} = props
-  return <>{children}</>
-}, {fallback: "AppShell"})
+  return (<>
+      <CssBaseline/>
+      <ConnectionError>
+        {children}
+      </ConnectionError>
+    </>
+  )
+}, {fallback: <LoadingComponent/>})
 
 export const App = () =>
-  <AppShell>
-    <CssBaseline/>
-    <Authenticated>
-      <Main/>
-    </Authenticated>
-    <ReConnectionToast/>
-    <ReConnectedToast/>
-    <ConnectionErrorToast/>
-    <ErrorToast/>
-  </AppShell>
-
+  <>
+    <AppShell>
+      <Authenticated>
+        <Main/>
+      </Authenticated>
+      <ReConnectionToast/>
+      <ReConnectedToast/>
+      <ConnectionErrorToast/>
+      <ErrorToast/>
+    </AppShell>
+  </>
