@@ -5,16 +5,12 @@ import {useIsReConnecting} from "../../../state/connectionState";
 
 
 export const ReConnectionToast = withSubscribe(() => {
-  const toastId = "reconnectingToastId"
   const {t} = useTranslation()
   const isReconnecting = useIsReConnecting()
   return <Toast
-    toastId={toastId}
     show={isReconnecting}
     title={t("reConnectingTitle")}
     description={t("reConnectingDescription")}
     status={"loading"}
-    duration={null}
-    isClosable={false}
   />
 })

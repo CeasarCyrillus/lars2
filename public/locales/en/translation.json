@@ -6,6 +6,7 @@
   "loginButtonLabel": "Login",
   "forgotPasswordPrompt": "forgot password?",
   "welcomeHeader": "Login to LARS",
+  "welcomeText": "The Teams Administrative Reporting System",
   "errorTitle": "An error occurred",
   "authenticationFailed": "Authentication failed, please login again",
   "unknownErrorMessage": "An unexpected error occurred. Please refresh the page",

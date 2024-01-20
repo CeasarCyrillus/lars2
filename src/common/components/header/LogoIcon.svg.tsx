@@ -1,4 +1,4 @@
-export const LogoIcon = () =>
+export const LogoIconSvg = () =>
   <svg xmlns="http://www.w3.org/2000/svg" height="40px"
        viewBox="0 0 614.947 151.456">
     <path id="antidoping-logo--white"

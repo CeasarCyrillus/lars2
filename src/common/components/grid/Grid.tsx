@@ -1,8 +1,8 @@
 import {AgGridReact} from "ag-grid-react";
-import {Box} from "@chakra-ui/react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import {ColDef} from "ag-grid-community";
+import {GridWrapper} from "./Grid.style";
 
 type GridProps<T> = {
   rows: T[]
@@ -10,11 +10,11 @@ type GridProps<T> = {
 }
 export const Grid = <T, >(props: GridProps<T>) => {
   const {rows, columnDefs} = props
-  return <Box sx={{width: "100%", height: "100%"}}>
+  return <GridWrapper>
     <AgGridReact
       autoSizeStrategy={{type: "fitGridWidth"}}
       rowData={rows}
       columnDefs={columnDefs}
       className={"ag-theme-quartz"}/>
-  </Box>
+  </GridWrapper>
 }

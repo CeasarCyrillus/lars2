@@ -1,10 +1,5 @@
-import {Box} from "@chakra-ui/react";
-import {ChildrenProps} from "../../lib/childrenProps";
+import {Box, styled} from "@mui/material";
 
-export const HeaderStyled = (props: ChildrenProps) => <Box sx={{
-  backgroundColor: "orange.400",
-  width: "100vw",
-  height: "55px"
-}}>
-  {props.children}
-</Box>
+export const HeaderWrapper = styled(Box)({
+  gridArea: "header",
+})

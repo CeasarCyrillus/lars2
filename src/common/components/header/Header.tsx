@@ -1,15 +1,13 @@
-import {HeaderStyled} from "./Header.style";
-import {LogoIcon} from "./LogoIcon";
-import {LogoIconStyled} from "./LogoIcon.style";
-import {LanguageButtons} from "./LanguageButtons";
-import {LogoutLink} from "./LogoutLink";
+import {LogoIcon} from "./LogoIcon.style";
+import {AppBar, Toolbar} from "@mui/material";
+import {HeaderWrapper} from "./Header.style";
 
 export const Header = () => {
-  return <HeaderStyled>
-    <LogoIconStyled>
-      <LogoIcon/>
-    </LogoIconStyled>
-    <LanguageButtons/>
-    <LogoutLink/>
-  </HeaderStyled>
+  return <HeaderWrapper sx={{flexGrow: 1}}>
+    <AppBar position="static">
+      <Toolbar>
+        <LogoIcon/>
+      </Toolbar>
+    </AppBar>
+  </HeaderWrapper>
 }

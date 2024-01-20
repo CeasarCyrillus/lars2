@@ -1,7 +1,4 @@
-import {ChildrenProps} from "../../lib/childrenProps";
-import {Box} from "@chakra-ui/react";
+import {LogoIconSvg} from "./LogoIcon.svg";
+import {styled} from "@mui/material";
 
-export const LogoIconStyled = (props: ChildrenProps) =>
-  <Box sx={{position: "absolute", top: "6px", left: "8px"}}>
-    {props.children}
-  </Box>
+export const LogoIcon = styled(LogoIconSvg)({})

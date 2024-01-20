@@ -1,18 +1,11 @@
-import {Box, Stack} from "@chakra-ui/react";
-import {ChildrenProps} from "../../lib/childrenProps";
+import {Paper, styled} from "@mui/material";
 
-export const LoginFormStyled = (props: ChildrenProps) =>
-  <Box minWidth={{base: "100%"}}>
-    <form>
-      <Stack
-        sx={{
-          padding: "1rem",
-          backgroundColor: "whiteAlpha.900",
-          boxShadow: "md",
-          gap: 3
-        }}
-      >
-        {props.children}
-      </Stack>
-    </form>
-  </Box>
+export const LoginFormWrapper = styled(Paper)({
+  margin: "10% auto",
+  padding: "20px",
+  width: "90%",
+  maxWidth: "300px",
+  flexDirection: "column",
+  display: "flex",
+  gap: "20px"
+})

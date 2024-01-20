@@ -1,6 +1,6 @@
 import {ReportStatus} from "@backend/dto/ReportStatus";
-import {Box, Tag} from "@chakra-ui/react";
 import {useTranslation} from "react-i18next";
+import {Box, Chip} from "@mui/material";
 
 const useTranslated = (prefix: string) =>
   function useTranslated(key: string) {
@@ -14,30 +14,26 @@ export type ReportStatusProp = {
 export const ReportStatusCell = (props: ReportStatusProp) => {
   const {status} = props
   const translateStatus = useTranslated("reportStatus")
-  if (status === "not-started") {
-    return null
-  }
-  const colorScheme = statusColorMap[status]
+  const color = statusColorMap[status]
   return <Box sx={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%"}}>
-    <Tag variant={"solid"}
-         sx={{
-           width: "100px",
-           justifyContent: "center",
-           alignItems: "center",
-           display: "flex"
-         }}
-         colorScheme={colorScheme}
-    >
-      {translateStatus(status)}
-    </Tag>
+    <Chip
+      label={translateStatus(status)}
+      color={color}
+      sx={{
+        width: "100px",
+        justifyContent: "center",
+        alignItems: "center",
+        display: "flex",
+      }}
+    />
   </Box>
 }
 
-const statusColorMap: Record<ReportStatus, string> = {
-  "not-started": "blue",
-  "in-progress": "yellow",
-  approved: "green",
-  "past-deadline": "red"
+const statusColorMap: Record<ReportStatus, "info" | "warning" | "success" | "error"> = {
+  "not-started": "info",
+  "in-progress": "warning",
+  approved: "success",
+  "past-deadline": "error"
 }
 
 export type TranslatedHeaderProps = {

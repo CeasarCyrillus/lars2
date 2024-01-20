@@ -6,6 +6,7 @@
   "loginButtonLabel": "Logga in",
   "forgotPasswordPrompt": "glömt lösenord?",
   "welcomeHeader": "Logga in på LARS",
+  "welcomeText": "Lagens Administrativa Rapporterings System",
   "errorTitle": "Ett fel uppstod",
   "authenticationFailed": "Autentiseringen misslyckades, vänligen logga in igen",
   "unknownErrorMessage": "Ett oväntat fel uppstod. Var god uppdatera sidan",

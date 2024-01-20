@@ -1,6 +1,5 @@
 import React from 'react';
 import './i18n';
-import {ChakraProvider, theme} from '@chakra-ui/react';
 import {Main} from "./Main";
 import {withSubscribe} from "./common/lib/withSubscribe";
 import {ChildrenProps} from "./common/lib/childrenProps";
@@ -10,6 +9,12 @@ import {ReConnectionToast} from "./common/components/toasts/connectionToasts/ReC
 import {ReConnectedToast} from "./common/components/toasts/connectionToasts/ReConnectedToast";
 import {ConnectionErrorToast} from "./common/components/toasts/connectionToasts/ConnectionErrorToast";
 import {ErrorToast} from "./common/components/toasts/ErrorToast";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
+import {CssBaseline} from '@mui/material';
 
 const Authenticated = withSubscribe((props: ChildrenProps) => {
   const isAuthenticated = useIsAuthenticated()
@@ -21,15 +26,12 @@ const Authenticated = withSubscribe((props: ChildrenProps) => {
 
 const AppShell = withSubscribe((props: ChildrenProps) => {
   const {children} = props
-  return (
-    <ChakraProvider theme={theme}>
-      {children}
-    </ChakraProvider>
-  )
+  return <>{children}</>
 }, {fallback: "AppShell"})
 
 export const App = () =>
   <AppShell>
+    <CssBaseline/>
     <Authenticated>
       <Main/>
     </Authenticated>

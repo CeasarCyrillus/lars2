@@ -22,4 +22,4 @@ export const [useError] = bind(errorState$.pipe(
 )
 
 //TODO: this is to make sure that toasts can be shown again if the same error happens
-export const clearError = () => setErrorState(null)
+export const dismissError = () => setErrorState(null)
