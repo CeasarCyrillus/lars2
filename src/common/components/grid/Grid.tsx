@@ -22,7 +22,7 @@ const mapColumnDef = (gridName: string) => (colDef: ColDef): ColDef => ({
 
 export const Grid = <T, >(props: GridProps<T>) => {
   const {rows, columnDefs, prefix, Toolbar} = props
-  return <Box sx={{width: "100%"}}>
+  return <Box sx={{width: "100%", padding: 0, margin: 0}}>
     <Toolbar/>
     <GridWrapper>
       <AgGridReact

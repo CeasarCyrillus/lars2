@@ -14,6 +14,6 @@ export const logout = () => {
   window.location.reload()
 }
 
-export const [useIsAuthenticated] = bind(() => authService.isAuthenticated$())
+export const [useIsAuthenticated] = bind(authService.isAuthenticated$)
 
 export const useLogout = () => authService.logout

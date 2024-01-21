@@ -4,15 +4,14 @@ import {useTranslation} from "react-i18next";
 import {useState} from "react";
 
 export const FatalErrorPage = () => {
-  const {t} = useTranslation("error")
   const [isOpen, setIsOpen] = useState(true)
   const onReload = () => {
     setIsOpen(false)
     window.location.reload();
   }
-
-  return <Layout hideHeader={true}>
-    <Dialog open={true} fullWidth maxWidth={"xs"}>
+  const {t} = useTranslation("error")
+  return <Layout>
+    <Dialog open={isOpen} fullWidth maxWidth={"xs"}>
       <DialogTitle>{t("fatalErrorTitle")}</DialogTitle>
       <DialogContent>
         <Typography variant={"inherit"}>{t("fatalErrorMessage")}</Typography>
@@ -23,5 +22,5 @@ export const FatalErrorPage = () => {
         <Button onClick={onReload}>{t("fatalErrorButton")}</Button>
       </DialogActions>
     </Dialog>
-  </Layout>
+  </Layout>;
 }

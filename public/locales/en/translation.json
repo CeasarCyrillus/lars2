@@ -23,7 +23,7 @@
   "report.GridHeader.reporter.name": "Reporter",
   "report.GridHeader.reporter.phone": "Phone",
   "report.GridHeader.reporter.email": "Email",
-  "report.GridHeader.report_date": "Created",
+  "report.GridHeader.report_date": "Report date",
   "reports": "Reports",
   "teams": "Teams",
   "team": "Team",

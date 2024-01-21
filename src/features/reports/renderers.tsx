@@ -8,6 +8,9 @@ export type ReportStatusProp = {
 export const ReportStatusCell = (props: ReportStatusProp) => {
   const {status} = props
   const {t} = useTranslation()
+  if (status === "not-started") {
+    return null
+  }
   const color = statusColorMap[status]
   return <Box sx={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%"}}>
     <Chip
