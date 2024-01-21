@@ -9,20 +9,20 @@ import {Authentication} from "@backend/dto/Authentication";
 import {ClientToServerEvents, EventName, ServerToClientEvents} from "@backend/socket/Socket";
 import {Response} from "@backend/socket/response/Response";
 import {isErrorResponse} from "../response";
-import {User} from "@backend/dto/User";
-import {Report} from "@backend/dto/Report";
-import {Team} from "@backend/dto/Team";
+import {ReportDTO} from "@backend/dto/ReportDTO";
+import {TeamDTO} from "@backend/dto/TeamDTO";
 import {AllErrors} from "@backend/error/AllErrors";
 import {handleError} from "../../state/errorState";
+import {AdminDTO} from "@backend/dto/AdminDTO";
 
 export type SocketService = {
   connected$: () => Observable<void>
   connectionError$: () => Observable<void>
-  user$: () => Observable<User>
+  user$: () => Observable<AdminDTO>
   validateAuthentication$: (authentication: Authentication) => Observable<boolean>
-  reports$: () => Observable<Report[]>
+  reports$: () => Observable<ReportDTO[]>
   login$: (loginDetails: LoginDetails) => Observable<Authentication>
-  teams$: () => Observable<Team[]>
+  teams$: () => Observable<TeamDTO[]>
   setSocketAuthentication: (authentication: Authentication) => void
 }
 
@@ -66,12 +66,12 @@ export const createSocketService = (): SocketService => {
 
     user$: () => {
       socket.emit(userEvent)
-      return subscribeToEvent$<User>(userEvent);
+      return subscribeToEvent$<AdminDTO>(userEvent);
     },
 
     reports$: () => {
       socket.emit(reportsEvent)
-      return subscribeToEvent$<Report[]>(reportsEvent)
+      return subscribeToEvent$<ReportDTO[]>(reportsEvent)
     },
 
     validateAuthentication$: (authentication: Authentication) => {
@@ -86,7 +86,7 @@ export const createSocketService = (): SocketService => {
 
     teams$: () => {
       socket.emit(teamsEvent)
-      return subscribeToEvent$<Team[]>(teamsEvent)
+      return subscribeToEvent$<TeamDTO[]>(teamsEvent)
     }
   };
 }

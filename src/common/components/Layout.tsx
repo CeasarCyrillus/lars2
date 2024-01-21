@@ -1,14 +1,18 @@
 import React from "react";
 import {ChildrenProps} from "../lib/childrenProps";
 import {Header} from "./header/Header";
-import {LayoutWrapper} from "./Layout.style";
+import {ContentLayoutWrapper, LayoutWrapper} from "./Layout.style";
+import {Navigation} from "./navigation/Navigation";
 
 type Props = { hideHeader?: boolean } & ChildrenProps
 export const Layout = (props: Props) => {
-  const {children, hideHeader} = props
+  const {children} = props
 
   return <LayoutWrapper>
-    {!hideHeader && <Header/>}
-    {children}
+    <Header/>
+    <ContentLayoutWrapper>
+      <Navigation/>
+      {children}
+    </ContentLayoutWrapper>
   </LayoutWrapper>
 }

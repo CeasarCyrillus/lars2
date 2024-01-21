@@ -10,8 +10,9 @@ export const FatalErrorPage = () => {
     setIsOpen(false)
     window.location.reload();
   }
-  return <Layout hideHeader>
-    <Dialog open={isOpen} fullWidth maxWidth={"xs"}>
+
+  return <Layout hideHeader={true}>
+    <Dialog open={true} fullWidth maxWidth={"xs"}>
       <DialogTitle>{t("fatalErrorTitle")}</DialogTitle>
       <DialogContent>
         <Typography variant={"inherit"}>{t("fatalErrorMessage")}</Typography>

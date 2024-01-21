@@ -1,9 +1,9 @@
 import {Observable} from "rxjs";
 import {SocketService} from "../socketService/socketService";
-import {Report} from "@backend/dto/Report";
+import {ReportDTO} from "@backend/dto/ReportDTO";
 
 export type ReportService = {
-  reports$: () => Observable<Report[]>
+  reports$: () => Observable<ReportDTO[]>
 }
 
 type ReportServiceDependencies = {

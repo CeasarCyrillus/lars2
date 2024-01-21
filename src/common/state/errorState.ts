@@ -27,6 +27,7 @@ export const [useHasError] = bind(error$.pipe(
 )
 
 export const [useLatestError] = bind(error$.pipe(
+  startWith(null),
   pairwise(),
   map(([prevError, currentError]) =>
     prevError !== null ? prevError : currentError)

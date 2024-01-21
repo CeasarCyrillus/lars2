@@ -1,9 +1,9 @@
 import {SocketService} from "../socketService/socketService";
 import {Observable} from "rxjs";
-import {Team} from "@backend/dto/Team";
+import {TeamDTO} from "@backend/dto/TeamDTO";
 
 type TeamService = {
-  teams$: () => Observable<Team[]>
+  teams$: () => Observable<TeamDTO[]>
 }
 
 type TeamServiceDependencies = {

@@ -1,7 +1,8 @@
-import {Report} from "@backend/dto/Report";
+import {ReportDTO} from "@backend/dto/ReportDTO";
 import {ReportStatus} from "@backend/dto/ReportStatus";
-import {ColDef, Column} from "ag-grid-community";
-import {ReportStatusCell, ReportStatusProp, TranslatedHeader, TranslatedHeaderProps} from "./renderers";
+import {ColDef} from "ag-grid-community";
+import {ReportStatusCell, ReportStatusProp} from "./renderers";
+import {TranslatedHeader, translatedHeaderProps} from "../../common/components/grid/TranslatedHeader";
 
 const getPeriod = (period: string) => {
   const date = new Date(period)
@@ -9,18 +10,13 @@ const getPeriod = (period: string) => {
   const prefix = month < 10 ? "0" : ""
   return `${prefix}${month}/${date.getFullYear()}`
 }
-export type RowModel = Report
+export type RowModel = ReportDTO
 
-let translatedHeaderProps = (params: { column: Column }): TranslatedHeaderProps => {
-  const field = params.column.getColDef().field
-  if (!field) {
-    throw new Error("Field definition not found!")
-  }
-  return {prefix: "reportGridHeader", translationKey: field}
-};
+const getHeaderProps = translatedHeaderProps("report")
+
 export const colDefs: ColDef<RowModel>[] = [
   {
-    field: "status", headerName: "Status", maxWidth: 125,
+    field: "status", headerName: "Status", minWidth: 130, maxWidth: 135,
     cellRenderer: ReportStatusCell,
     cellRendererParams: (data: { value: ReportStatus }) => {
       const props: ReportStatusProp = {
@@ -32,33 +28,34 @@ export const colDefs: ColDef<RowModel>[] = [
   {
     field: "period",
     headerComponent: TranslatedHeader,
-    headerComponentParams: translatedHeaderProps,
-    cellRenderer: (data: { value: string }) => getPeriod(data.value)
+    headerComponentParams: getHeaderProps,
+    cellRenderer: (data: { value: string }) => getPeriod(data.value),
   },
   {
-    field: "teamName",
+    field: "team.name",
     headerComponent: TranslatedHeader,
-    headerComponentParams: translatedHeaderProps
+    headerComponentParams: getHeaderProps,
+    sort: "asc"
   },
   {
     field: "reporter.name",
     headerComponent: TranslatedHeader,
-    headerComponentParams: translatedHeaderProps,
+    headerComponentParams: getHeaderProps,
   },
   {
     field: "reporter.phone",
     headerComponent: TranslatedHeader,
-    headerComponentParams: translatedHeaderProps,
+    headerComponentParams: getHeaderProps,
   },
   {
     field: "reporter.email",
     headerComponent: TranslatedHeader,
-    headerComponentParams: translatedHeaderProps
+    headerComponentParams: getHeaderProps
   },
   {
-    field: "created",
+    field: "report_date",
     headerComponent: TranslatedHeader,
-    headerComponentParams: translatedHeaderProps,
+    headerComponentParams: getHeaderProps,
     cellRenderer: (data: { value: string }) => {
       const date = new Date(data.value)
 

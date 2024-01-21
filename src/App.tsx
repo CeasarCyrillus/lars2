@@ -42,17 +42,16 @@ const ConnectionError = (props: ChildrenProps) => {
 
 const AppShell = withSubscribe((props: ChildrenProps) => {
   const {children} = props
-  return (<>
-      <CssBaseline/>
-      <ConnectionError>
-        {children}
-      </ConnectionError>
-    </>
+  return (
+    <ConnectionError>
+      {children}
+    </ConnectionError>
   )
 }, {fallback: <LoadingComponent/>})
 
 export const App = () =>
   <>
+    <CssBaseline/>
     <AppShell>
       <Authenticated>
         <Main/>

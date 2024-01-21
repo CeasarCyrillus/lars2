@@ -5,12 +5,13 @@
         "../lars2_backend/src/sharedTypes/*"
       ]
     },
-    "target": "es5",
+    "target": "ES2016",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "strictPropertyInitialization": false,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
