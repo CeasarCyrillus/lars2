@@ -1,35 +1,44 @@
-import {AgGridReact} from "ag-grid-react";
+import {AgGridReact} from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import {ColDef} from "ag-grid-community";
+import {ColDef, IDatasource} from "ag-grid-community";
 import {GridWrapper} from "./Grid.style";
 import {TranslatedHeader, translatedHeaderProps} from "./TranslatedHeader";
 import {ComponentType} from "react";
 import {Box} from "@mui/material";
 
 type GridProps<T> = {
-  rows: T[]
   columnDefs: ColDef<T>[]
   prefix: string
   Toolbar: ComponentType
+  dataSource: IDatasource
 }
 
-const mapColumnDef = (gridName: string) => (colDef: ColDef): ColDef => ({
-  headerComponent: TranslatedHeader,
-  headerComponentParams: translatedHeaderProps(gridName),
-  ...colDef,
-})
-
 export const Grid = <T, >(props: GridProps<T>) => {
-  const {rows, columnDefs, prefix, Toolbar} = props
+  const {dataSource, columnDefs, prefix, Toolbar} = props
   return <Box sx={{width: "100%", padding: 0, margin: 0}}>
     <Toolbar/>
     <GridWrapper>
       <AgGridReact
+        reactiveCustomComponents
+        datasource={dataSource}
+        rowModelType={"infinite"}
+        getRowStyle={(params) => params.data === undefined ? {display: "none"} : {display: "unset"}}
         autoSizeStrategy={{type: "fitGridWidth"}}
-        rowData={rows}
-        columnDefs={columnDefs.map(mapColumnDef(prefix))}
-        className={"ag-theme-quartz"}/>
+        columnDefs={columnDefs}
+        className={"ag-theme-quartz"}
+        defaultColDef={{
+          flex: 1,
+          minWidth: 100,
+          filter: true,
+          floatingFilter: true,
+          filterParams: {
+            debounceMs: 0
+          },
+          headerComponent: TranslatedHeader,
+          headerComponentParams: translatedHeaderProps(prefix),
+        }}
+      />
     </GridWrapper>
   </Box>
 }

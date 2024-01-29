@@ -3,12 +3,12 @@ import {useTranslation} from "react-i18next";
 import {Box, Chip} from "@mui/material";
 
 export type ReportStatusProp = {
-  status: ReportStatus
+  status: ReportStatus | undefined
 }
 export const ReportStatusCell = (props: ReportStatusProp) => {
   const {status} = props
   const {t} = useTranslation()
-  if (status === "not-started") {
+  if (!status || status === "not-started") {
     return null
   }
   const color = statusColorMap[status]
