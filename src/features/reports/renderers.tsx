@@ -8,7 +8,7 @@ export type ReportStatusProp = {
 export const ReportStatusCell = (props: ReportStatusProp) => {
   const {status} = props
   const {t} = useTranslation()
-  if (!status || status === "not-started") {
+  if (!status) {
     return null
   }
   const color = statusColorMap[status]
@@ -30,5 +30,5 @@ const statusColorMap: Record<ReportStatus, "info" | "warning" | "success" | "err
   "not-started": "info",
   "in-progress": "warning",
   approved: "success",
-  "past-deadline": "error"
+  "past-deadline": "error",
 }

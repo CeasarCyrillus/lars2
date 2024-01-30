@@ -13,10 +13,7 @@ export const ReportDataSource: IDatasource = {
       page: {startRow: params.startRow, endRow: params.endRow},
       filter: params.filterModel
     }
-
-    console.log("CC: getting", queryModel.filter.status?.filter)
     const response = await firstValueFrom(socketService.reports$(queryModel))
-    console.log("CC: response", queryModel.filter.status?.filter)
     params.successCallback(response.data, response.count)
   },
 }

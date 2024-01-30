@@ -33,5 +33,6 @@
   "connectionErrorTitle": "Unable to connect to server!",
   "connectionErrorDescription": "Please check your internet connection and then refresh the application",
   "reconnectedTitle": "Successfully re-connected to server!",
-  "reconnectedDescription": "The connection to the server was successfully re-established"
+  "reconnectedDescription": "The connection to the server was successfully re-established",
+  "clearDropdown": "All"
 }

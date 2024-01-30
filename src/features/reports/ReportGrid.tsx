@@ -12,5 +12,19 @@ const GridToolbarWrapper = styled(Box)(({theme}) => ({
 }))
 
 export const ReportGrid = withSubscribe(() => {
-  return <Grid dataSource={ReportDataSource} columnDefs={colDefs} prefix={"report"} Toolbar={() => <></>}/>
+  return <Grid
+    dataSource={ReportDataSource}
+    columnDefs={colDefs}
+    prefix={"report"}
+    Toolbar={() => <></>}
+    gridOptions={{
+      floatingFiltersHeight: 70,
+      defaultColDef: {
+        floatingFilter: false,
+        filterParams: {
+          debounceMs: 0
+        },
+      }
+    }}
+  />
 })

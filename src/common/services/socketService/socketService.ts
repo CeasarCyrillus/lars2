@@ -80,7 +80,6 @@ export const createSocketService = (): SocketService => {
     reports$: (reportQuery) => {
       const request = withTrace(reportQuery)
       socket.emit(reportsEvent, request)
-      console.log("CC: getting", request.trace)
       return subscribeToEvent$<QueryResponse<ReportDTO[]>>(reportsEvent).pipe(
         filter(response => response.trace === request.trace),
         map(response => response.payload)

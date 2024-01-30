@@ -1,9 +1,6 @@
 import {Autocomplete, TextField} from "@mui/material";
+import {Option} from "./Dropdown";
 
-type Option = {
-  label: string,
-  value: number
-}
 type Props = {
   label: string
   options: Option[]
@@ -14,6 +11,7 @@ export const SearchableDropdown = (props: Props) => {
   const {value, label, options, onChange} = props
   return <Autocomplete
     value={value}
+    isOptionEqualToValue={(option, value) => option.value === value.value}
     onChange={(_, selectedOption) => onChange(selectedOption ?? null)}
     renderInput={(params) => <TextField {...params} label={label}/>}
     options={options}

@@ -1,7 +1,7 @@
 import {AgGridReact} from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import {ColDef, IDatasource} from "ag-grid-community";
+import {ColDef, GridOptions, IDatasource} from "ag-grid-community";
 import {GridWrapper} from "./Grid.style";
 import {TranslatedHeader, translatedHeaderProps} from "./TranslatedHeader";
 import {ComponentType} from "react";
@@ -12,14 +12,16 @@ type GridProps<T> = {
   prefix: string
   Toolbar: ComponentType
   dataSource: IDatasource
+  gridOptions?: GridOptions<T>
 }
 
 export const Grid = <T, >(props: GridProps<T>) => {
-  const {dataSource, columnDefs, prefix, Toolbar} = props
+  const {dataSource, columnDefs, prefix, Toolbar, gridOptions} = props
   return <Box sx={{width: "100%", padding: 0, margin: 0}}>
     <Toolbar/>
     <GridWrapper>
       <AgGridReact
+        {...gridOptions}
         reactiveCustomComponents
         datasource={dataSource}
         rowModelType={"infinite"}
@@ -28,13 +30,6 @@ export const Grid = <T, >(props: GridProps<T>) => {
         columnDefs={columnDefs}
         className={"ag-theme-quartz"}
         defaultColDef={{
-          flex: 1,
-          minWidth: 100,
-          filter: true,
-          floatingFilter: true,
-          filterParams: {
-            debounceMs: 0
-          },
           headerComponent: TranslatedHeader,
           headerComponentParams: translatedHeaderProps(prefix),
         }}
