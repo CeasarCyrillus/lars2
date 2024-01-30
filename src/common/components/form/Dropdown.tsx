@@ -1,4 +1,4 @@
-import {MenuItem, Select} from "@mui/material"
+import {MenuItem, Select, Typography} from "@mui/material"
 import {ComponentType} from "react";
 
 export type Option = {
@@ -13,21 +13,26 @@ type Props = {
   value: string,
   onChange: (value: string) => void
   noneSelectedLabel?: string
+  placeholder?: string
 }
 
-export const nothingSelected = "nothingSelected"
+const PlaceHolder = (props: { placeholder: string }) => <Typography
+  sx={{color: "gray", fontWeight: 400, fontSize: "inherit"}}><em>{props.placeholder}</em></Typography>
 export const Dropdown = (props: Props) => {
-  const {options, noneSelectedLabel, value, onChange, OptionComponent} = props
+  const {options, noneSelectedLabel, value, onChange, OptionComponent, placeholder} = props
+  const renderer = (!value && placeholder) ? () => <PlaceHolder placeholder={placeholder}/> : undefined
   return <Select
     size={"small"}
     value={value}
     onChange={(event) => onChange(event.target.value)}
+    renderValue={renderer}
+    displayEmpty
   >
     {noneSelectedLabel &&
         <MenuItem
-            value={nothingSelected}
+            value={undefined}
         >
-            <em>{noneSelectedLabel}</em>
+            <PlaceHolder placeholder={noneSelectedLabel}/>
         </MenuItem>}
     {options.map(option =>
       <MenuItem

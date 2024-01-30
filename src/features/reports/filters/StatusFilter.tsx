@@ -27,7 +27,6 @@ export const StatusFilter = (props: CustomFloatingFilterProps<any, any, any, Tex
   const options = useStatusOptions()
 
   const onChange = (value: string) => {
-    console.log("CC: value", value)
     if (!value) {
       onModelChange(null)
     } else {
@@ -44,8 +43,9 @@ export const StatusFilter = (props: CustomFloatingFilterProps<any, any, any, Tex
     label={"Status"}
     options={options}
     onChange={onChange}
-    value={model?.filter ?? "nothingSelected"}
+    value={model?.filter ?? ""}
     noneSelectedLabel={t("clearDropdown")}
+    placeholder={t("filterReportStatus")}
     OptionComponent={(props) => <ReportStatusCell status={props.value as ReportStatus}/>}
   />
 }

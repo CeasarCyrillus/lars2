@@ -2,5 +2,5 @@ import {Box, styled} from "@mui/material";
 
 export const GridWrapper = styled(Box)({
   width: "100%",
-  height: "87%",
+  height: "100%",
 })

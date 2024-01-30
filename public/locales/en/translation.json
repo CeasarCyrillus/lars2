@@ -34,5 +34,6 @@
   "connectionErrorDescription": "Please check your internet connection and then refresh the application",
   "reconnectedTitle": "Successfully re-connected to server!",
   "reconnectedDescription": "The connection to the server was successfully re-established",
-  "clearDropdown": "All"
+  "clearDropdown": "All",
+  "filterReportStatus": "Report status"
 }
