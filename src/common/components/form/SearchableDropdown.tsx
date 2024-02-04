@@ -4,16 +4,20 @@ import {Option} from "./Dropdown";
 type Props = {
   label: string
   options: Option[]
-  onChange: (newValue: Option | null) => void
-  value: Option | null
+  onChange: (newValue: string | null) => void
+  value: string | null
+  disabled?: boolean
+  noneSelectedLabel?: string
 }
 export const SearchableDropdown = (props: Props) => {
-  const {value, label, options, onChange} = props
+  const {value, label, options, onChange, disabled} = props
   return <Autocomplete
-    value={value}
+    disabled={disabled}
+    size={"small"}
+    value={options.find(option => option.value === value) ?? null}
     isOptionEqualToValue={(option, value) => option.value === value.value}
-    onChange={(_, selectedOption) => onChange(selectedOption ?? null)}
-    renderInput={(params) => <TextField {...params} label={label}/>}
+    onChange={(_, selectedOption) => onChange(selectedOption?.value ?? null)}
+    renderInput={(params) => <TextField {...params} placeholder={label}/>}
     options={options}
   />
 }

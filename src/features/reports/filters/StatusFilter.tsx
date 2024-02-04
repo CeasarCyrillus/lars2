@@ -2,7 +2,7 @@ import {ReportStatus} from "@backend/dto/ReportStatus";
 import {CustomFloatingFilterProps} from "ag-grid-react";
 import {useTranslation} from "react-i18next";
 import {Dropdown} from "../../../common/components/form/Dropdown";
-import {ReportStatusCell} from "../renderers";
+import {ReportStatusCellRenderer} from "../renderers/ReportStatusCellRenderer";
 import {TextFilterModel} from "ag-grid-community";
 import {useMemo} from "react";
 
@@ -46,6 +46,6 @@ export const StatusFilter = (props: CustomFloatingFilterProps<any, any, any, Tex
     value={model?.filter ?? ""}
     noneSelectedLabel={t("clearDropdown")}
     placeholder={t("filterReportStatus")}
-    OptionComponent={(props) => <ReportStatusCell status={props.value as ReportStatus}/>}
+    OptionComponent={(props) => <ReportStatusCellRenderer status={props.value as ReportStatus}/>}
   />
 }

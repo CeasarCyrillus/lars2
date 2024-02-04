@@ -18,7 +18,7 @@ export const ReportGrid = withSubscribe(() => {
     prefix={"report"}
     Toolbar={() => <></>}
     gridOptions={{
-      floatingFiltersHeight: 70,
+      floatingFiltersHeight: 120,
       defaultColDef: {
         floatingFilter: false,
         filterParams: {

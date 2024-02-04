@@ -23,6 +23,7 @@ export const Dropdown = (props: Props) => {
   const renderer = (!value && placeholder) ? () => <PlaceHolder placeholder={placeholder}/> : undefined
   return <Select
     size={"small"}
+    sx={{width: "100%"}}
     value={value}
     onChange={(event) => onChange(event.target.value)}
     renderValue={renderer}

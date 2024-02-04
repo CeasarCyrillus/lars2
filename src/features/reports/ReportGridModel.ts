@@ -1,8 +1,10 @@
 import {ReportDTO} from "@backend/dto/ReportDTO";
 import {ReportStatus} from "@backend/dto/ReportStatus";
 import {ColDef} from "ag-grid-community";
-import {ReportStatusCell, ReportStatusProp} from "./renderers";
+import {ReportStatusCellRenderer, ReportStatusProp} from "./renderers/ReportStatusCellRenderer";
 import {StatusFilter} from "./filters/StatusFilter";
+import {PeriodFilter} from "./filters/PeriodFilter";
+import {reportPeriodValueFormatter} from "./renderers/ReportPeriodValueFormatter";
 
 const getPeriod = (period: string | undefined) => {
   if (!period) {
@@ -17,7 +19,7 @@ export type RowModel = ReportDTO
 export const colDefs: ColDef<RowModel>[] = [
   {
     field: "status", minWidth: 180, maxWidth: 185,
-    cellRenderer: ReportStatusCell,
+    cellRenderer: ReportStatusCellRenderer,
     floatingFilter: true,
     filter: true,
     floatingFilterComponent: StatusFilter,
@@ -34,9 +36,14 @@ export const colDefs: ColDef<RowModel>[] = [
   },
   {
     field: "period",
-    minWidth: 130,
-    maxWidth: 135,
-    cellRenderer: (data: { value: string | undefined }) => getPeriod(data.value),
+    filter: true,
+    floatingFilter: true,
+    width: 180,
+    valueFormatter: reportPeriodValueFormatter,
+    floatingFilterComponent: PeriodFilter,
+    floatingFilterComponentParams: {
+      suppressFilterButton: true
+    }
   },
   {
     field: "team.name",

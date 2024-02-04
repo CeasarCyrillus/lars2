@@ -1,0 +1,1 @@
+export const range = <T>(length: number, mapper: (i: number) => T) => Array.from({length: length}, (_, i) => mapper(i))

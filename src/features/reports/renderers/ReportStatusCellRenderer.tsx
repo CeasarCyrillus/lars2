@@ -5,7 +5,7 @@ import {Box, Chip} from "@mui/material";
 export type ReportStatusProp = {
   status: ReportStatus | undefined
 }
-export const ReportStatusCell = (props: ReportStatusProp) => {
+export const ReportStatusCellRenderer = (props: ReportStatusProp) => {
   const {status} = props
   const {t} = useTranslation()
   if (!status) {
