@@ -5,6 +5,7 @@ import {ReportStatusCellRenderer, ReportStatusProp} from "./renderers/ReportStat
 import {StatusFilter} from "./filters/StatusFilter";
 import {PeriodFilter} from "./filters/PeriodFilter";
 import {reportPeriodValueFormatter} from "./renderers/ReportPeriodValueFormatter";
+import {TeamFilter} from "./filters/TeamFilter";
 
 const getPeriod = (period: string | undefined) => {
   if (!period) {
@@ -36,9 +37,9 @@ export const colDefs: ColDef<RowModel>[] = [
   },
   {
     field: "period",
+    width: 180,
     filter: true,
     floatingFilter: true,
-    width: 180,
     valueFormatter: reportPeriodValueFormatter,
     floatingFilterComponent: PeriodFilter,
     floatingFilterComponentParams: {
@@ -47,6 +48,12 @@ export const colDefs: ColDef<RowModel>[] = [
   },
   {
     field: "team.name",
+    filter: true,
+    floatingFilter: true,
+    floatingFilterComponent: TeamFilter,
+    floatingFilterComponentParams: {
+      suppressFilterButton: true
+    }
   },
   {
     field: "reporter.name",

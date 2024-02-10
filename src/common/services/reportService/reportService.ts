@@ -1,11 +1,12 @@
+import {ReportFilter} from "@backend/dto/filter/ReportFilter";
 import {ReportDTO} from "@backend/dto/ReportDTO";
-import {QueryRequest} from "@backend/socket/request/QueryRequest";
+import {QueryModel} from "@backend/socket/request/QueryModel";
 import {QueryResponse} from "@backend/socket/response/QueryResponse";
 import {Observable} from "rxjs";
 import {SocketService} from "../socketService/socketService";
 
 export type ReportService = {
-  reports$: (request: QueryRequest<ReportDTO>) => Observable<QueryResponse<ReportDTO[]>>
+  reports$: (query: QueryModel<ReportFilter>) => Observable<QueryResponse<ReportDTO[]>>
 }
 
 type ReportServiceDependencies = {

@@ -13,19 +13,20 @@ import {TeamDTO} from "@backend/dto/TeamDTO";
 import {AllErrors} from "@backend/error/AllErrors";
 import {handleError} from "../../state/errorState";
 import {AdminDTO} from "@backend/dto/AdminDTO";
-import {QueryRequest} from "@backend/socket/request/QueryRequest";
+import {QueryModel} from "@backend/socket/request/QueryModel";
 import {ReportDTO} from "@backend/dto/ReportDTO";
 import {QueryResponse} from "@backend/socket/response/QueryResponse";
 import {uid} from "uid/single";
+import {ReportFilter} from "@backend/dto/filter/ReportFilter";
 
 export type SocketService = {
   connected$: () => Observable<void>
   connectionError$: () => Observable<void>
   user$: () => Observable<AdminDTO>
   validateAuthentication$: (authentication: Authentication) => Observable<boolean>
-  reports$: (filter: QueryRequest<ReportDTO>) => Observable<QueryResponse<ReportDTO[]>>
+  reports$: (filter: QueryModel<ReportFilter>) => Observable<QueryResponse<ReportDTO[]>>
   login$: (loginDetails: LoginDetails) => Observable<Authentication>
-  teams$: () => Observable<TeamDTO[]>
+  allTeams$: () => Observable<TeamDTO[]>
   setSocketAuthentication: (authentication: Authentication) => void
 }
 
@@ -36,12 +37,6 @@ const ioOptions: Partial<ManagerOptions & SocketOptions> = {
   reconnection: true,
 }
 
-const userEvent: EventName = "user"
-const validateAuthenticationEvent: EventName = "validateAuthentication"
-const reportsEvent: EventName = "reports"
-const loginEvent: EventName = "login"
-const teamsEvent: EventName = "teams"
-
 const subscribeToEvent = (socket: Socket) => <T>(eventName: EventName): Observable<SuccessResponse<T>> =>
   fromEventPattern<Response<T, AllErrors>>((handler: NodeEventHandler) => {
     socket.on(eventName, handler)
@@ -49,10 +44,11 @@ const subscribeToEvent = (socket: Socket) => <T>(eventName: EventName): Observab
     map(response => {
       if (isErrorResponse(response)) {
         handleError(response)
-        throw response.payload
+        return
       }
       return response;
     }),
+    filter(Boolean),
     shareReplay({refCount: false, bufferSize: 1}),
   )
 
@@ -73,14 +69,14 @@ export const createSocketService = (): SocketService => {
     connectionError$: () => subscribeToEvent$<void>("connect_error").pipe(map(r => r.payload)),
 
     user$: () => {
-      socket.emit(userEvent)
-      return subscribeToEvent$<AdminDTO>(userEvent).pipe(map(r => r.payload));
+      socket.emit("user")
+      return subscribeToEvent$<AdminDTO>("user").pipe(map(r => r.payload));
     },
 
     reports$: (reportQuery) => {
       const request = withTrace(reportQuery)
-      socket.emit(reportsEvent, request)
-      return subscribeToEvent$<QueryResponse<ReportDTO[]>>(reportsEvent).pipe(
+      socket.emit("getReports", request)
+      return subscribeToEvent$<QueryResponse<ReportDTO[]>>("getReports").pipe(
         filter(response => response.trace === request.trace),
         map(response => response.payload)
       )
@@ -88,19 +84,19 @@ export const createSocketService = (): SocketService => {
 
     validateAuthentication$: (authentication: Authentication) => {
       const request = withTrace(authentication)
-      socket.emit(validateAuthenticationEvent, request)
-      return subscribeToEvent$<boolean>(validateAuthenticationEvent).pipe(map(r => r.payload));
+      socket.emit("validateAuthentication", request)
+      return subscribeToEvent$<boolean>("validateAuthentication").pipe(map(r => r.payload));
     },
 
     login$: (loginDetails: LoginDetails) => {
       const request = withTrace(loginDetails)
-      socket.emit(loginEvent, request)
-      return subscribeToEvent$<Authentication>(loginEvent).pipe(map(r => r.payload));
+      socket.emit("login", request)
+      return subscribeToEvent$<Authentication>("login").pipe(map(r => r.payload));
     },
 
-    teams$: () => {
-      socket.emit(teamsEvent)
-      return subscribeToEvent$<TeamDTO[]>(teamsEvent).pipe(map(r => r.payload));
+    allTeams$: () => {
+      socket.emit("getAllTeams", withTrace(undefined))
+      return subscribeToEvent$<TeamDTO[]>("getAllTeams").pipe(map(r => r.payload));
     }
   };
 }

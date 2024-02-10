@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {TeamDTO} from "@backend/dto/TeamDTO";
 
 type TeamService = {
-  teams$: () => Observable<TeamDTO[]>
+  allTeams$: () => Observable<TeamDTO[]>
 }
 
 type TeamServiceDependencies = {
@@ -11,6 +11,5 @@ type TeamServiceDependencies = {
 }
 export const createTeamService = (dependencies: TeamServiceDependencies): TeamService => {
   const {socketService} = dependencies
-  const teams$ = () => socketService.teams$()
-  return {teams$}
+  return {allTeams$: socketService.allTeams$}
 }

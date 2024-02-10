@@ -1,5 +1,4 @@
 import {ChangeEvent, Fragment} from "react";
-import {useTeamOptions} from "./reportGridState";
 import {Box} from "@mui/material";
 import {Subscribe} from "@react-rxjs/core";
 import {CustomFloatingFilterProps} from "ag-grid-react";
@@ -21,7 +20,7 @@ export const TeamFilterWrapper = ({model, onModelChange}: CustomFloatingFilterPr
 }
 
 export const TeamFilter2 = (props: CustomFloatingFilterProps) => {
-  const teamOptions = useTeamOptions()
+  const teamOptions = []
   console.log("CC: model", props.model)
   return null
 }
