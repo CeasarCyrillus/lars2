@@ -4,21 +4,18 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import {ColDef, GridOptions, IDatasource} from "ag-grid-community";
 import {GridWrapper} from "./Grid.style";
 import {TranslatedHeader, translatedHeaderProps} from "./TranslatedHeader";
-import {ComponentType} from "react";
 import {Box} from "@mui/material";
 
 type GridProps<T> = {
   columnDefs: ColDef<T>[]
   prefix: string
-  Toolbar: ComponentType
   dataSource: IDatasource
   gridOptions?: GridOptions<T>
 }
 
 export const Grid = <T, >(props: GridProps<T>) => {
-  const {dataSource, columnDefs, prefix, Toolbar, gridOptions} = props
+  const {dataSource, columnDefs, prefix, gridOptions} = props
   return <Box sx={{width: "100%", padding: 0, margin: 0}}>
-    <Toolbar/>
     <GridWrapper>
       <AgGridReact
         {...gridOptions}

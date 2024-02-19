@@ -1,24 +1,22 @@
 import {colDefs} from "./ReportGridModel";
 import {Grid} from "../../common/components/grid/Grid";
-import {Box, styled} from "@mui/material";
 import {withSubscribe} from "../../common/lib/withSubscribe";
 import {ReportDataSource} from "./ReportDataSource";
+import {RowClickedEvent} from "ag-grid-community";
+import {ReportDTO} from "@backend/dto/ReportDTO";
 
-const GridToolbarWrapper = styled(Box)(({theme}) => ({
-  width: "100%",
-  padding: "20px",
-  display: "flex",
-  gap: "10px",
-}))
-
-export const ReportGrid = withSubscribe(() => {
+const ReportGrid = withSubscribe(() => {
   return <Grid
     dataSource={ReportDataSource}
     columnDefs={colDefs}
     prefix={"report"}
-    Toolbar={() => <></>}
     gridOptions={{
+      onRowClicked(event: RowClickedEvent<ReportDTO>) {
+        console.log("CC: row", event.data)
+      },
       floatingFiltersHeight: 120,
+      rowStyle: {"cursor": "pointer"},
+      suppressCellFocus: true,
       defaultColDef: {
         floatingFilter: false,
         filterParams: {
@@ -28,3 +26,5 @@ export const ReportGrid = withSubscribe(() => {
     }}
   />
 })
+
+export default ReportGrid
