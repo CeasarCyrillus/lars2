@@ -2,17 +2,21 @@ import {Layout} from "./common/components/Layout";
 import {withSubscribe} from "./common/lib/withSubscribe";
 import {Header} from "./common/components/header/Header";
 import {Navigation} from "./common/components/navigation/Navigation";
-import React from "react";
+import React, {lazy} from "react";
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
-import {ReportPage} from "./features/reports/ReportPage";
+import {Path} from "./common/lib/navigation";
+
+const ReportGrid = lazy(() => import("./features/reports/ReportGrid"));
+const ReportDetails = lazy(() => import("./features/reports/reportDetails/ReportDetails"));
 
 export const Main = withSubscribe(() => {
   return (
     <BrowserRouter>
       <Layout header={<Header/>} navigation={<Navigation/>}>
         <Routes>
-          <Route path={"/reports"} Component={ReportPage}/>
-          <Route path={"*"} Component={() => <Navigate to={"/reports"}/>}/>
+          <Route path={Path.Reports} Component={ReportGrid}/>
+          <Route path={Path.ReportDetails} Component={ReportDetails}/>
+          <Route path={"*"} Component={() => <Navigate to={Path.Reports}/>}/>
         </Routes>
       </Layout>
     </BrowserRouter>

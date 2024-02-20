@@ -35,5 +35,7 @@
   "reconnectedTitle": "Successfully re-connected to server!",
   "reconnectedDescription": "The connection to the server was successfully re-established",
   "clearDropdown": "All",
-  "filterReportStatus": "Report status"
+  "filterReportStatus": "Report status",
+  "reportDetailsHeader": "Report Details",
+  "reportPeriod": "Report period"
 }

@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const reportPeriodValueFormatter = (params: { value: string } | null) => {
+export const reportPeriodValueFormatter = (params: { value: string | Date } | null) => {
   if (!params) {
     return ""
   }

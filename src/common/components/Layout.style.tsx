@@ -11,7 +11,7 @@ export const ContentLayoutWrapper = styled(Box)({
   height: "100%",
   display: "flex",
   padding: 0,
-  margin: 0,
+  margin: "15px",
   marginTop: "20px",
   gap: "10px"
 })

@@ -3,18 +3,19 @@ import {List, ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/m
 import ChecklistOutlinedIcon from "@mui/icons-material/ChecklistOutlined";
 import {ComponentType} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
+import {Path} from "../../lib/navigation";
 
 type Props = {
   label: string,
   Icon: ComponentType,
-  value: string
+  value: Path
 }
 
 const NavigationItem = (props: Props) => {
   const {label, Icon, value} = props
   const navigate = useNavigate()
   const {pathname} = useLocation()
-  const isSelected = pathname === `/${value}`
+  const isSelected = pathname.startsWith(value)
   return <ListItem dense={false} disablePadding divider>
     <ListItemButton
       sx={{width: "200px"}}
@@ -36,7 +37,7 @@ export const Navigation = () => {
   const {t} = useTranslation()
   return (
     <List>
-      <NavigationItem label={t("reports")} value={"reports"} Icon={ChecklistOutlinedIcon}/>
+      <NavigationItem label={t("reports")} value={Path.Reports} Icon={ChecklistOutlinedIcon}/>
     </List>
   )
 }

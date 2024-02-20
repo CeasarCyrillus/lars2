@@ -1,6 +1,6 @@
 import {io, ManagerOptions, Socket, SocketOptions} from "socket.io-client";
 import Config from "../../../configuration.local.json"
-import {filter, fromEventPattern, map, Observable, shareReplay} from "rxjs";
+import {filter, fromEventPattern, map, Observable} from "rxjs";
 
 import {NodeEventHandler} from "rxjs/internal/observable/fromEvent";
 
@@ -18,6 +18,8 @@ import {ReportDTO} from "@backend/dto/ReportDTO";
 import {QueryResponse} from "@backend/socket/response/QueryResponse";
 import {uid} from "uid/single";
 import {ReportFilter} from "@backend/dto/filter/ReportFilter";
+import {ReportDetailsDTO} from "@backend/dto/ReportDetailsDTO";
+import {IdRequestPayload} from "@backend/socket/request/IdRequestPayload";
 
 export type SocketService = {
   connected$: () => Observable<void>
@@ -28,6 +30,7 @@ export type SocketService = {
   login$: (loginDetails: LoginDetails) => Observable<Authentication>
   allTeams$: () => Observable<TeamDTO[]>
   setSocketAuthentication: (authentication: Authentication) => void
+  reportDetails$: (reportId: number) => Observable<ReportDetailsDTO>;
 }
 
 const ioOptions: Partial<ManagerOptions & SocketOptions> = {
@@ -49,7 +52,6 @@ const subscribeToEvent = (socket: Socket) => <T>(eventName: EventName): Observab
       return response;
     }),
     filter(Boolean),
-    shareReplay({refCount: false, bufferSize: 1}),
   )
 
 const withTrace = <T>(payload: T) => ({
@@ -80,6 +82,12 @@ export const createSocketService = (): SocketService => {
         filter(response => response.trace === request.trace),
         map(response => response.payload)
       )
+    },
+
+    reportDetails$: (reportId: number) => {
+      const request = withTrace<IdRequestPayload>({id: reportId})
+      socket.emit("getReportDetails", request)
+      return subscribeToEvent$<ReportDetailsDTO>("getReportDetails").pipe(map(r => r.payload))
     },
 
     validateAuthentication$: (authentication: Authentication) => {
