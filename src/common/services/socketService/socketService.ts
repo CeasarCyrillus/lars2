@@ -12,7 +12,6 @@ import {isErrorResponse} from "../response";
 import {TeamDTO} from "@backend/dto/TeamDTO";
 import {AllErrors} from "@backend/error/AllErrors";
 import {handleError} from "../../state/errorState";
-import {AdminDTO} from "@backend/dto/AdminDTO";
 import {QueryModel} from "@backend/socket/request/QueryModel";
 import {ReportDTO} from "@backend/dto/ReportDTO";
 import {QueryResponse} from "@backend/socket/response/QueryResponse";
@@ -20,17 +19,18 @@ import {uid} from "uid/single";
 import {ReportFilter} from "@backend/dto/filter/ReportFilter";
 import {ReportDetailsDTO} from "@backend/dto/ReportDetailsDTO";
 import {IdRequestPayload} from "@backend/socket/request/IdRequestPayload";
+import {UserDTO} from "@backend/dto/UserDTO";
 
 export type SocketService = {
   connected$: () => Observable<void>
   connectionError$: () => Observable<void>
-  user$: () => Observable<AdminDTO>
   validateAuthentication$: (authentication: Authentication) => Observable<boolean>
   reports$: (filter: QueryModel<ReportFilter>) => Observable<QueryResponse<ReportDTO[]>>
   login$: (loginDetails: LoginDetails) => Observable<Authentication>
   allTeams$: () => Observable<TeamDTO[]>
   setSocketAuthentication: (authentication: Authentication) => void
   reportDetails$: (reportId: number) => Observable<ReportDetailsDTO>;
+  user$: (userId: number) => Observable<UserDTO>
 }
 
 const ioOptions: Partial<ManagerOptions & SocketOptions> = {
@@ -70,11 +70,6 @@ export const createSocketService = (): SocketService => {
     connected$: () => subscribeToEvent$<void>("connect").pipe(map(r => r.payload)),
     connectionError$: () => subscribeToEvent$<void>("connect_error").pipe(map(r => r.payload)),
 
-    user$: () => {
-      socket.emit("user")
-      return subscribeToEvent$<AdminDTO>("user").pipe(map(r => r.payload));
-    },
-
     reports$: (reportQuery) => {
       const request = withTrace(reportQuery)
       socket.emit("getReports", request)
@@ -105,6 +100,11 @@ export const createSocketService = (): SocketService => {
     allTeams$: () => {
       socket.emit("getAllTeams", withTrace(undefined))
       return subscribeToEvent$<TeamDTO[]>("getAllTeams").pipe(map(r => r.payload));
+    },
+
+    user$: (userId: number) => {
+      socket.emit("getUser", withTrace({id: userId}))
+      return subscribeToEvent$<UserDTO>("getUser").pipe(map(r => r.payload))
     }
   };
 }

@@ -17,6 +17,9 @@ import {FatalErrorPage} from "./common/components/FatalErrorPage";
 import {CssBaseline} from "@mui/material";
 import {FullPageLoadingSpinner} from "./common/components/FullPageLoadingSpinner";
 import {useIsFatalError} from "./common/state/connectionState";
+import {enableMapSet} from "immer";
+
+enableMapSet()
 
 const Authenticated = (props: ChildrenProps) => {
   const isAuthenticated = useIsAuthenticated()

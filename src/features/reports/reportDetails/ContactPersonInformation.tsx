@@ -4,33 +4,34 @@ import React from "react";
 import {ReportDetailsWrapper} from "./ReportDetailsWrapper";
 import {Row} from "./Row";
 import {Link} from "react-router-dom";
+import {setSelectedUser, useMaybeSelectedUser} from "../../../common/state/userState";
+import {UserDTO} from "@backend/dto/UserDTO";
 
 export const ContactPersonInformation = () => {
   const report = useSelectedReport()
   const contacts = report.team.reporters.filter(contact => contact.id !== report.reporter.id)
+  const selectedUser = useMaybeSelectedUser()
   return <ReportDetailsWrapper header={"Contacts"}>
-    <ContactInformation {...report.reporter} isReporter/>
+    <ContactInformation user={report.reporter} isReporter/>
     {contacts.map(contact =>
       <span key={contact.id}>
         <Divider/>
-        <ContactInformation {...contact} />
+        <ContactInformation user={contact}/>
       </span>
     )}
-
+    <p>{selectedUser?.email}</p>
   </ReportDetailsWrapper>
 }
 
 type ContactInformationProps = {
-  name: string,
-  email?: string,
-  phone?: string,
+  user: UserDTO
   isReporter?: boolean
 }
-const ContactInformation = ({name, email, phone, isReporter}: ContactInformationProps) => {
+const ContactInformation = ({user, isReporter}: ContactInformationProps) => {
   const label = isReporter ? <Chip label={"Reporter"} variant={"outlined"}/> : undefined
   return <>
-    <Link to={""}><Row label={label}>{name}</Row></Link>
-    {email && <Row>{email}</Row>}
-    {phone && <Row>{phone}</Row>}
+    <Link to={""} onClick={() => setSelectedUser(user.id)}><Row label={label}>{user.name}</Row></Link>
+    {user.email && <Row>{user.email}</Row>}
+    {user.phone && <Row>{user.phone}</Row>}
   </>;
 }
