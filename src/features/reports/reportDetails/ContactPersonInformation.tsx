@@ -3,6 +3,7 @@ import {Chip, Divider} from "@mui/material";
 import React from "react";
 import {ReportDetailsWrapper} from "./ReportDetailsWrapper";
 import {Row} from "./Row";
+import {Link} from "react-router-dom";
 
 export const ContactPersonInformation = () => {
   const report = useSelectedReport()
@@ -28,7 +29,7 @@ type ContactInformationProps = {
 const ContactInformation = ({name, email, phone, isReporter}: ContactInformationProps) => {
   const label = isReporter ? <Chip label={"Reporter"} variant={"outlined"}/> : undefined
   return <>
-    <Row label={label}>{name}</Row>
+    <Link to={""}><Row label={label}>{name}</Row></Link>
     {email && <Row>{email}</Row>}
     {phone && <Row>{phone}</Row>}
   </>;

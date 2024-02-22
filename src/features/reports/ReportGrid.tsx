@@ -5,7 +5,7 @@ import {ReportDataSource} from "../../common/services/ReportDataSource";
 import {RowClickedEvent} from "ag-grid-community";
 import {ReportDTO} from "@backend/dto/ReportDTO";
 import {useNavigate} from "react-router-dom";
-import {getDetailsPath, Path} from "../../common/lib/navigation";
+import {reportDetailsPath} from "../../common/lib/navigation/reportPaths";
 
 const ReportGrid = withSubscribe(() => {
   const navigate = useNavigate()
@@ -16,7 +16,7 @@ const ReportGrid = withSubscribe(() => {
     gridOptions={{
       onRowClicked(event: RowClickedEvent<ReportDTO>) {
         if (event.data?.id !== undefined) {
-          navigate(getDetailsPath(Path.ReportDetails, event.data.id))
+          navigate(reportDetailsPath(event.data.id))
         }
       },
       floatingFiltersHeight: 120,

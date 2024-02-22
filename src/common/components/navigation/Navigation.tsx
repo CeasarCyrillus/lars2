@@ -3,12 +3,12 @@ import {List, ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/m
 import ChecklistOutlinedIcon from "@mui/icons-material/ChecklistOutlined";
 import {ComponentType} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {Path} from "../../lib/navigation";
+import {paths} from "../../lib/navigation/navigation";
 
 type Props = {
   label: string,
   Icon: ComponentType,
-  value: Path
+  value: string
 }
 
 const NavigationItem = (props: Props) => {
@@ -37,7 +37,7 @@ export const Navigation = () => {
   const {t} = useTranslation()
   return (
     <List>
-      <NavigationItem label={t("reports")} value={Path.Reports} Icon={ChecklistOutlinedIcon}/>
+      <NavigationItem label={t("reports")} value={paths.reports.root} Icon={ChecklistOutlinedIcon}/>
     </List>
   )
 }
