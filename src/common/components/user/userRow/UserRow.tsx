@@ -1,9 +1,9 @@
 import {UserRole} from "@backend/dto/UserRole"
 import {UserRowWrapper} from "./UserRow.style";
-import {UserAvatar} from "../../../common/components/user/UserAvatar";
+import {UserAvatar} from "../UserAvatar";
 import {Typography} from "@mui/material";
 import React from "react";
-import {UserRoleChip} from "../../../common/components/user/UserRoleChip";
+import {UserRoleChip} from "../UserRoleChip";
 
 type Props = {
   role: UserRole

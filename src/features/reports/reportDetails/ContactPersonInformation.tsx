@@ -2,12 +2,12 @@ import {useSelectedReport} from "./useSelectedReporter";
 import {Divider} from "@mui/material";
 import React from "react";
 import {DetailsTable} from "../../../common/components/details/DetailsTable";
-import {setSelectedUser} from "../../../common/state/userState";
-import {UserDetailsModal} from "../../user/UserDetailsModal";
+import {UserDetailsModal} from "../../../common/components/user/userDetailsModal/UserDetailsModal";
 import {AdminDTO} from "@backend/dto/AdminDTO";
 import {DetailsRow} from "../../../common/components/details/DetailsRow";
 import {ClickableLink} from "../../../common/components/clickableLink/ClickableLink";
 import {UserRoleChip} from "../../../common/components/user/UserRoleChip";
+import {setSelectedUser} from "../../../common/components/user/userDetailsModal/userDetailsModalState";
 
 export const ContactPersonInformation = () => {
   const report = useSelectedReport()

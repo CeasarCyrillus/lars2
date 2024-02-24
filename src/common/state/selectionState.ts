@@ -2,7 +2,7 @@ import {createSignal, mergeWithKey} from "@react-rxjs/utils";
 import {Observed} from "../lib/Observed";
 import {produce} from "immer";
 import {assertNever} from "../lib/assertNever";
-import {map, scan, startWith} from "rxjs";
+import {map, scan, shareReplay, startWith} from "rxjs";
 
 type SelectionState = Map<string, number>
 type SelectionPayload = {
@@ -40,7 +40,8 @@ const _selectionState$ = signals$.pipe(
 
 export const selectionState$ = (selectionName: string) => _selectionState$.pipe(
   map(state => state.get(selectionName)),
-  map(selection => selection ?? null)
+  map(selection => selection ?? null),
+  shareReplay(1),
 )
 
 export {setSelection, unsetSelection}
