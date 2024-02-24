@@ -1,5 +1,5 @@
 import {LoginForm} from "./LoginForm";
-import {Layout} from "../Layout";
+import {Layout} from "../layout/Layout";
 import {withSubscribe} from "../../lib/withSubscribe";
 import React from "react";
 import {LoginPageWrapper} from "./LoginPage.style";

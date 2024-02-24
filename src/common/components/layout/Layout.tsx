@@ -1,5 +1,5 @@
 import React, {ReactNode} from "react";
-import {ChildrenProps} from "../lib/childrenProps";
+import {ChildrenProps} from "../../lib/childrenProps";
 import {ContentLayoutWrapper, LayoutWrapper} from "./Layout.style";
 
 type Props = {

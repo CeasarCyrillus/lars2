@@ -1,37 +1,41 @@
 import {useSelectedReport} from "./useSelectedReporter";
-import {Chip, Divider} from "@mui/material";
+import {Divider} from "@mui/material";
 import React from "react";
-import {ReportDetailsWrapper} from "./ReportDetailsWrapper";
-import {Row} from "./Row";
-import {Link} from "react-router-dom";
-import {setSelectedUser, useMaybeSelectedUser} from "../../../common/state/userState";
-import {UserDTO} from "@backend/dto/UserDTO";
+import {DetailsTable} from "../../../common/components/details/DetailsTable";
+import {setSelectedUser} from "../../../common/state/userState";
+import {UserDetailsModal} from "../../user/UserDetailsModal";
+import {AdminDTO} from "@backend/dto/AdminDTO";
+import {DetailsRow} from "../../../common/components/details/DetailsRow";
+import {ClickableLink} from "../../../common/components/clickableLink/ClickableLink";
+import {UserRoleChip} from "../../../common/components/user/UserRoleChip";
 
 export const ContactPersonInformation = () => {
   const report = useSelectedReport()
   const contacts = report.team.reporters.filter(contact => contact.id !== report.reporter.id)
-  const selectedUser = useMaybeSelectedUser()
-  return <ReportDetailsWrapper header={"Contacts"}>
-    <ContactInformation user={report.reporter} isReporter/>
-    {contacts.map(contact =>
-      <span key={contact.id}>
+  return <>
+    <DetailsTable header={"Contacts"}>
+      <ContactInformation user={report.reporter} isReporter/>
+      {contacts.map(contact =>
+          <span key={contact.id}>
         <Divider/>
         <ContactInformation user={contact}/>
       </span>
-    )}
-    <p>{selectedUser?.email}</p>
-  </ReportDetailsWrapper>
+      )}
+    </DetailsTable>
+    <UserDetailsModal/>
+  </>
 }
 
 type ContactInformationProps = {
-  user: UserDTO
+  user: AdminDTO
   isReporter?: boolean
 }
 const ContactInformation = ({user, isReporter}: ContactInformationProps) => {
-  const label = isReporter ? <Chip label={"Reporter"} variant={"outlined"}/> : undefined
+  const label = isReporter ? <UserRoleChip role={"reporter"}/> : undefined
   return <>
-    <Link to={""} onClick={() => setSelectedUser(user.id)}><Row label={label}>{user.name}</Row></Link>
-    {user.email && <Row>{user.email}</Row>}
-    {user.phone && <Row>{user.phone}</Row>}
+    <DetailsRow label={label}><ClickableLink
+      onClick={() => setSelectedUser(user.id)}>{user.name}</ClickableLink></DetailsRow>
+    {user.email && <DetailsRow>{user.email}</DetailsRow>}
+    {user.phone && <DetailsRow>{user.phone}</DetailsRow>}
   </>;
 }

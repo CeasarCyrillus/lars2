@@ -1,4 +1,4 @@
-import {Layout} from "./common/components/Layout";
+import {Layout} from "./common/components/layout/Layout";
 import {withSubscribe} from "./common/lib/withSubscribe";
 import {Header} from "./common/components/header/Header";
 import {Navigation} from "./common/components/navigation/Navigation";

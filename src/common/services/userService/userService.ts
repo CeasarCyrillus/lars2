@@ -1,9 +1,9 @@
 import {Observable} from "rxjs";
 import {SocketService} from "../socketService/socketService";
-import {UserDTO} from "@backend/dto/UserDTO";
+import {AdminDTO} from "@backend/dto/AdminDTO";
 
 export type UserService = {
-  user$: (userId: number) => Observable<UserDTO>
+  user$: (userId: number) => Observable<AdminDTO>
 }
 
 export type UserServiceDependencies = {

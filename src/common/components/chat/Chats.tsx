@@ -1,5 +1,6 @@
-import {Avatar, Box, Card, Divider, Paper, Stack, Typography} from "@mui/material"
+import {Box, Card, Divider, Paper, Stack, Typography} from "@mui/material"
 import React from "react";
+import {UserAvatar} from "../user/UserAvatar";
 
 const comments = [
   {
@@ -44,10 +45,7 @@ const Chat = ({from, comment}: ChatProps) => {
         justifyContent: "flex-start",
         gap: "10px"
       }}>
-        <Avatar
-          src={`https://ui-avatars.com/api/?background=random&name=${from}`}
-          sx={{width: 30, height: 30}}
-        />
+        <UserAvatar name={from}/>
         <Typography><b>{from}</b></Typography>
       </Box>
       <Divider/>

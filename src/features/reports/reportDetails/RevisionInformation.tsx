@@ -1,6 +1,5 @@
 import {useSelectedReport} from "./useSelectedReporter";
-import {ReportDetailsWrapper} from "./ReportDetailsWrapper";
-import {Row} from "./Row";
+import {DetailsTable} from "../../../common/components/details/DetailsTable";
 import {ReportStatusCellRenderer} from "../renderers/ReportStatusCellRenderer";
 import {Divider} from "@mui/material";
 import moment from "moment/moment";
@@ -8,6 +7,7 @@ import {Link} from "react-router-dom";
 import React from "react";
 import {reportRevisionsPath} from "../../../common/lib/navigation/reportPaths";
 import {ReportDetailsDTO} from "@backend/dto/ReportDetailsDTO";
+import {DetailsRow} from "../../../common/components/details/DetailsRow";
 
 
 type RevisionRowProps = {
@@ -16,24 +16,25 @@ type RevisionRowProps = {
 
 const RevisionRow = ({reportDetails}: RevisionRowProps) => {
   if (!reportDetails.revision) {
-    return <Row label={"Revisions"}>{reportDetails.revision}</Row>
+    return <DetailsRow label={"Revisions"}>{reportDetails.revision}</DetailsRow>
   }
 
   return (
     <Link to={reportRevisionsPath(reportDetails.id)}>
-      <Row label={"Revisions"}>{reportDetails.revision}</Row>
+      <DetailsRow label={"Revisions"}>{reportDetails.revision}</DetailsRow>
     </Link>)
 }
 
 export const RevisionInformation = () => {
   const reportDetails = useSelectedReport()
-  return <ReportDetailsWrapper header={"Report Details"}>
-    <Row label={"Status"}><ReportStatusCellRenderer status={reportDetails.status}/></Row>
+  return <DetailsTable header={"Report Details"}>
+    <DetailsRow label={"Status"}><ReportStatusCellRenderer status={reportDetails.status}/></DetailsRow>
     <Divider/>
-    <Row label={"Submitted date"}>{moment(reportDetails.report_date).format("YYYY-MM-DD hh:mm")}</Row>
+    <DetailsRow label={"Submitted date"}>{moment(reportDetails.report_date).format("YYYY-MM-DD hh:mm")}</DetailsRow>
     <Divider/>
-    <Row label={"Latest revision date"}>{moment(reportDetails.report_date).format("YYYY-MM-DD hh:mm")}</Row>
+    <DetailsRow
+      label={"Latest revision date"}>{moment(reportDetails.report_date).format("YYYY-MM-DD hh:mm")}</DetailsRow>
     <Divider/>
     <RevisionRow reportDetails={reportDetails}/>
-  </ReportDetailsWrapper>
+  </DetailsTable>
 }

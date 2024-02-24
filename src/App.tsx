@@ -13,9 +13,9 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import {FatalErrorPage} from "./common/components/FatalErrorPage";
+import {FatalErrorPage} from "./common/components/error/FatalErrorPage";
 import {CssBaseline} from "@mui/material";
-import {FullPageLoadingSpinner} from "./common/components/FullPageLoadingSpinner";
+import {FullPageLoadingSpinner} from "./common/components/loading/FullPageLoadingSpinner";
 import {useIsFatalError} from "./common/state/connectionState";
 import {enableMapSet} from "immer";
 

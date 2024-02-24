@@ -1,4 +1,4 @@
-import {Layout} from "./Layout";
+import {Layout} from "../layout/Layout";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import {useState} from "react";

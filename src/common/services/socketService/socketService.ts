@@ -19,7 +19,7 @@ import {uid} from "uid/single";
 import {ReportFilter} from "@backend/dto/filter/ReportFilter";
 import {ReportDetailsDTO} from "@backend/dto/ReportDetailsDTO";
 import {IdRequestPayload} from "@backend/socket/request/IdRequestPayload";
-import {UserDTO} from "@backend/dto/UserDTO";
+import {AdminDTO} from "@backend/dto/AdminDTO";
 
 export type SocketService = {
   connected$: () => Observable<void>
@@ -30,7 +30,7 @@ export type SocketService = {
   allTeams$: () => Observable<TeamDTO[]>
   setSocketAuthentication: (authentication: Authentication) => void
   reportDetails$: (reportId: number) => Observable<ReportDetailsDTO>;
-  user$: (userId: number) => Observable<UserDTO>
+  user$: (userId: number) => Observable<AdminDTO>
 }
 
 const ioOptions: Partial<ManagerOptions & SocketOptions> = {
@@ -104,7 +104,7 @@ export const createSocketService = (): SocketService => {
 
     user$: (userId: number) => {
       socket.emit("getUser", withTrace({id: userId}))
-      return subscribeToEvent$<UserDTO>("getUser").pipe(map(r => r.payload))
+      return subscribeToEvent$<AdminDTO>("getUser").pipe(map(r => r.payload))
     }
   };
 }
