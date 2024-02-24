@@ -1,11 +1,10 @@
 import {UserRole} from "@backend/dto/UserRole"
-import {Chip} from "@mui/material"
+import {Chip, ChipColor} from "../chip/Chip"
 
-type Color = 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'
 type Props = {
   role: UserRole
 }
-const colorMap: Record<UserRole, Color> = {
+const colorMap: Record<UserRole, ChipColor> = {
   admin: "primary",
   reporter: "default"
 }
@@ -14,7 +13,6 @@ const labelMap: Record<UserRole, string> = {
   reporter: "Reporter"
 }
 export const UserRoleChip = ({role}: Props) => <Chip
-  variant="filled"
-  label={labelMap[role]} size={"small"}
+  label={labelMap[role]}
   color={colorMap[role]}
 />

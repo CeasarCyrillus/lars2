@@ -3,9 +3,7 @@ import {DetailsTable} from "../../../common/components/details/DetailsTable";
 import {ReportStatusCellRenderer} from "../renderers/ReportStatusCellRenderer";
 import {Divider} from "@mui/material";
 import moment from "moment/moment";
-import {Link} from "react-router-dom";
 import React from "react";
-import {reportRevisionsPath} from "../../../common/lib/navigation/reportPaths";
 import {ReportDetailsDTO} from "@backend/dto/ReportDetailsDTO";
 import {DetailsRow} from "../../../common/components/details/DetailsRow";
 
@@ -15,14 +13,8 @@ type RevisionRowProps = {
 }
 
 const RevisionRow = ({reportDetails}: RevisionRowProps) => {
-  if (!reportDetails.revision) {
-    return <DetailsRow label={"Revisions"}>{reportDetails.revision}</DetailsRow>
-  }
-
-  return (
-    <Link to={reportRevisionsPath(reportDetails.id)}>
-      <DetailsRow label={"Revisions"}>{reportDetails.revision}</DetailsRow>
-    </Link>)
+  return <DetailsRow
+    label={"Revisions"}>{reportDetails.revision === 0 ? "No Revisions" : reportDetails.revision}</DetailsRow>
 }
 
 export const RevisionInformation = () => {

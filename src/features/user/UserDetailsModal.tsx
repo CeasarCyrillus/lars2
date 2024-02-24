@@ -11,7 +11,7 @@ export const UserDetailsModal = () => {
     return null
   }
   return (
-    <Dialog open={true} onClose={unsetSelectedUser} fullWidth={true}>
+    <Dialog open={!!user} onClose={unsetSelectedUser} fullWidth={true}>
       <InformationCard title={<UserRow name={user.name} role={user.role}/>}>
         <UserContact user={user}/>
       </InformationCard>

@@ -1,6 +1,7 @@
 import {ReportStatus} from "@backend/dto/ReportStatus";
 import {useTranslation} from "react-i18next";
-import {Box, Chip} from "@mui/material";
+import {Box} from "@mui/material";
+import {Chip} from "../../../common/components/chip/Chip";
 
 export type ReportStatusProp = {
   status: ReportStatus | undefined
@@ -16,12 +17,6 @@ export const ReportStatusCellRenderer = (props: ReportStatusProp) => {
     <Chip
       label={t(`reportStatus.${status}`)}
       color={color}
-      sx={{
-        width: "100px",
-        justifyContent: "center",
-        alignItems: "center",
-        display: "flex",
-      }}
     />
   </Box>
 }
