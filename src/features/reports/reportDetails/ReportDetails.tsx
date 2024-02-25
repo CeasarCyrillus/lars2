@@ -6,22 +6,24 @@ import {ReportNote} from "./ReportNote";
 import {useSelectedReport} from "./useSelectedReporter";
 import {ContactPersonInformation} from "./ContactPersonInformation";
 import {RevisionInformation} from "./RevisionInformation";
-import {InformationCard} from "../../../common/components/informationCard/InformationCard";
+import {PageContent} from "../../../common/components/pageLayout/PageContent";
 
 
 export const ReportDetails = () => {
   const {t} = useTranslation()
   const report = useSelectedReport()
-  return <InformationCard
-    title={t("reportDetailsHeader")}
-    subHeader={`${t("reportPeriod")}: ${reportPeriodValueFormatter({value: report.period})}`}
-  >
-    <Stack sx={{gap: "10px"}}>
-      <RevisionInformation/>
-      <ReportNote/>
-    </Stack>
-    <ContactPersonInformation/>
-  </InformationCard>
+  return (
+    <PageContent
+      title={t("reportDetailsHeader")}
+      subHeader={`${t("reportPeriod")}: ${reportPeriodValueFormatter({value: report.period})}`}
+    >
+      <Stack sx={{gap: "10px"}}>
+        <RevisionInformation/>
+        <ReportNote/>
+      </Stack>
+      <ContactPersonInformation/>
+    </PageContent>
+  )
 }
 
 

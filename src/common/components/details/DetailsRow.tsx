@@ -13,7 +13,7 @@ export const DetailsRow = ({children, label}: RowProps) => {
       justifyContent: "center",
       alignItems: "center",
       gap: "20px",
-      padding: "3px"
+      padding: "3px",
     }}>
       <Box sx={{flexGrow: 1}}>
         {label ?? ""}

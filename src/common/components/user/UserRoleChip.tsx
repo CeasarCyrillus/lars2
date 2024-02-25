@@ -6,11 +6,11 @@ type Props = {
 }
 const colorMap: Record<UserRole, ChipColor> = {
   admin: "primary",
-  reporter: "default"
+  volunteer: "default"
 }
 const labelMap: Record<UserRole, string> = {
   admin: "Admin",
-  reporter: "Reporter"
+  volunteer: "Volunteer"
 }
 export const UserRoleChip = ({role}: Props) => <Chip
   label={labelMap[role]}

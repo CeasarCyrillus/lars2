@@ -6,7 +6,7 @@ import {UserDetailsModal} from "../../../common/components/user/userDetailsModal
 import {AdminDTO} from "@backend/dto/AdminDTO";
 import {DetailsRow} from "../../../common/components/details/DetailsRow";
 import {ClickableLink} from "../../../common/components/clickableLink/ClickableLink";
-import {UserRoleChip} from "../../../common/components/user/UserRoleChip";
+import {Chip} from "../../../common/components/chip/Chip";
 
 export const ContactPersonInformation = () => {
   const report = useSelectedReport()
@@ -29,7 +29,8 @@ type ContactInformationProps = {
   isReporter?: boolean
 }
 const ContactInformation = ({user, isReporter}: ContactInformationProps) => {
-  const label = isReporter ? <UserRoleChip role={"reporter"}/> : undefined
+  const label = isReporter ?
+    <Chip color={"default"} label={"Reporter"} variant={"outlined"} size={"small"}/> : undefined
   const [isOpen, setIsOpen] = useState(false)
   return <>
     <DetailsRow label={label}><ClickableLink

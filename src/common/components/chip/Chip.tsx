@@ -1,12 +1,12 @@
-import {Chip as MUIChip} from "@mui/material";
+import {Chip as MUIChip, ChipProps} from "@mui/material";
 
 export type ChipColor = 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'
 type Props = {
   color: ChipColor
-  label: string
-}
+  label: string,
+} & ChipProps
 export const Chip = (props: Props) => <MUIChip
-  {...props}
   variant="filled"
   size={"medium"}
+  {...props}
 />
