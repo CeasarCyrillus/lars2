@@ -7,7 +7,14 @@ type RowProps = {
 }
 export const DetailsRow = ({children, label}: RowProps) => {
   return (
-    <Box sx={{display: "flex", width: "100%", justifyContent: "center", alignItems: "center", padding: "3px"}}>
+    <Box sx={{
+      display: "flex",
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "20px",
+      padding: "3px"
+    }}>
       <Box sx={{flexGrow: 1}}>
         {label ?? ""}
       </Box>

@@ -1,6 +1,7 @@
 import {AnyObject, ObjectSchema} from "yup";
 import {ReactNode} from "react";
 import {Form as FormikForm, Formik} from "formik";
+import {Box} from "@mui/material";
 
 type Props<T extends AnyObject> = {
   validationSchema: ObjectSchema<T>
@@ -15,9 +16,12 @@ export const Form = <T extends AnyObject>(props: Props<T>) => {
     {...props}
     validateOnChange={true}
     validateOnMount={true}
+    enableReinitialize={true}
   >
-    <FormikForm>
-      {children}
-    </FormikForm>
+    <Box sx={{"width": "100%"}}>
+      <FormikForm>
+        {children}
+      </FormikForm>
+    </Box>
   </Formik>;
 }

@@ -9,16 +9,18 @@ type Props = {
 
 const InternalInput = (props: Props) => {
   const {name} = props
-  const {touched, errors} = useFormikContext<Record<string, string>>()
+  const {touched, errors, getFieldMeta} = useFormikContext<Record<string, string>>()
   const isTouched = touched[name]
   const error = errors[name]
   const hasError = !!error && isTouched
-
   return <TextField
     {...props}
-    required
     error={hasError}
-    helperText={hasError ? error : ""}
+    margin={"dense"}
+    size={"small"}
+    FormHelperTextProps={{sx: {color: "blue"}}}
+    helperText={hasError ? error : " "}
+    variant={"standard"}
   />
 }
 export const FormInput = (props: Props) => {
