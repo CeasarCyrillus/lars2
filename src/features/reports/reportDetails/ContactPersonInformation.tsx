@@ -10,7 +10,7 @@ import {Chip} from "../../../common/components/chip/Chip";
 
 export const ContactPersonInformation = () => {
   const report = useSelectedReport()
-  const contacts = report.team.reporters.filter(contact => contact.id !== report.reporter.id)
+  const contacts = report.team.volunteers.filter(contact => contact.id !== report.reporter.id)
   return <>
     <DetailsTable header={"Contacts"}>
       <ContactInformation user={report.reporter} isReporter/>

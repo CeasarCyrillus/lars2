@@ -7,14 +7,6 @@ import {PeriodFilter} from "./filters/PeriodFilter";
 import {reportPeriodValueFormatter} from "./renderers/ReportPeriodValueFormatter";
 import {TeamFilter} from "./filters/TeamFilter";
 
-const getPeriod = (period: string | undefined) => {
-  if (!period) {
-    return null
-  }
-  const date = new Date(period)
-  const month = date.toLocaleString('default', {month: 'short'});
-  return `${month}/${date.getFullYear()}`
-}
 export type RowModel = ReportDTO
 
 export const colDefs: ColDef<RowModel>[] = [

@@ -27,23 +27,22 @@ export const createAuthService = (dependencies: AuthServiceDependencies): AuthSe
     loginAuthHeaderSubject$.next(authentication)
   }
 
-  const isAuthenticated$ = () => {
-    return loginAuthHeader$.pipe(
-      switchMap((freshToken) => {
-        if (freshToken !== null) {
-          return of(true)
-        }
-        const storedToken = getStoredToken()
-        if (storedToken === null) {
-          return of(false)
-        }
+  const isAuthenticated$ = () =>
+      loginAuthHeader$.pipe(
+          switchMap((freshToken) => {
+            if (freshToken !== null) {
+              return of(true)
+            }
+            const storedToken = getStoredToken()
+            if (storedToken === null) {
+              return of(false)
+            }
 
-        return socketService.validateAuthentication$(storedToken).pipe(
-          tap(isValid => isValid && updateAuthHeader(storedToken)),
-        );
-      }),
-    )
-  }
+            return socketService.validateAuthentication$(storedToken).pipe(
+                tap(isValid => isValid && updateAuthHeader(storedToken)),
+            );
+          }),
+      )
 
   const login$ = (username: string, password: string): Observable<void> =>
     socketService.login$({username, password}).pipe(

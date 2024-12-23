@@ -1,46 +1,60 @@
-# Getting Started with Create React App
+# L.A.R.S Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+I wanted to experiment with ag-grid and serverside filtering/sorting/ordering as well as websockets and streams, which is the reason for the chosen technologies of this project.
+The main point of the application is for administrators to keep track of different teams and their reports.
 
-In the project directory, you can run:
+The administrator of a team will report their presence at certain location (in a different system) and that report will be visible in this UI
 
-### `npm start`
+### The Good
+**1. Typesafe**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The project is typesafe from BE to FE, making sure that any contract/API changes are a compile time error - not a runtime crash 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+**2. High-Performance grid**
 
-### `npm test`
+The main report grid is using ag-grid and infinity scroll to only get a couple of rows, then loads more rows as the user scrolls.
+It's using a message to the BE to subscribe to the "getReports" stream, and then it subscribes an observable to that stream, updating the data as soon as new rows are available 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+**3. Folder structure**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+I think the project is well-structured, separating specific feature code, reusable components, and non UI parts in an intuitive way
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**4. Lazy-loading**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The different pages are lazy loaded to decrease the initial bundle size
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**Login screen**
+![loginScreen.png](loginScreen.png)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Overview of reports**
+![reports.png](reports.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+**Report details**
 
-## Learn More
+There's a lot of empty space here for a feature that never got developed
+![reportDetails.png](reportDetails.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**User details**
+![userDetails.png](userDetails.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+
+### The Bad
+- No automated tests
+- There's a couple of inline-styles here and there
+- Some component's have a lot of logic or inline function definitions that I would prefer to extract into testable functions
+- the service/state layer separation makes little sense since most of the heavy lifting is done in the socketService, and most services are just a thin abstraction on top of that
+- UI is **very** bare-bones, but functional
+- A lot of features were started but never finished
+
+## Local Development
+1. Install packages with `yarn install`
+2. Run the [backend](https://github.com/CeasarCyrillus/lars2_backend]) (Make sure that the BE and FE repos are in the same folder - the shared types in the BE repo is linked to with a relative path. Very bad , I know)
+3. Run the development server with `yarn start`
+4. Login with "admin" and "pwd"
+
+
